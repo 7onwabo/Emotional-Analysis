@@ -1,0 +1,47 @@
+# Dataset configuration.
+
+datasets:
+  brighter:
+    hf_id: brighter-dataset/BRIGHTER-emotion-categories
+    splits: [train, dev, test]
+    text_column: text
+    label_columns: [anger, disgust, fear, joy, sadness, surprise]
+    license: CC-BY-4.0
+    # All three target languages (afr, swa, hau) have a real train split,
+    # so no cross-lingual donor data is required.
+
+  ethioemo:
+    hf_id: Ethio-NLP/EthioEmo
+    splits: [train, dev, test]
+    text_column: text
+    label_columns: [anger, disgust, fear, joy, sadness, surprise]
+
+  afrisenti:
+    hf_id: shmuhammad/AfriSenti-twitter-sentiment
+    use: auxiliary
+    notes: 3-class sentiment, useful for intermediate pretraining
+
+  afrihate:
+    hf_id: afrihate/afrihate
+    use: auxiliary
+    notes: hate / offensive — adjacent task
+
+paths:
+  raw: ./data/raw
+  processed: ./data/processed
+  external: ./data/external
+
+preprocessing:
+  lowercase: false
+  strip_urls: true
+  strip_mentions: true
+  strip_emoji: false
+  normalize_whitespace: true
+  min_chars: 3
+  max_chars: 512
+
+split:
+  use_provided: true
+  fallback_strategy: iterative_stratified
+  val_ratio: 0.1
+  test_ratio: 0.1

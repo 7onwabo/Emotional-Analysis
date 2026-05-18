@@ -1,0 +1,47 @@
+# Default training hyperparameters. Override on CLI with Hydra-style syntax.
+
+seed: 42
+
+task:
+  name: multilabel_emotion
+  labels:
+    - anger
+    - disgust
+    - fear
+    - joy
+    - sadness
+    - surprise
+  problem_type: multi_label_classification
+  threshold: 0.5
+
+train:
+  num_epochs: 5
+  batch_size: 16
+  eval_batch_size: 32
+  gradient_accumulation_steps: 1
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  lr_scheduler: linear
+  max_grad_norm: 1.0
+  fp16: false
+  bf16: false
+  early_stopping_patience: 2
+  metric_for_best_model: f1_macro
+  greater_is_better: true
+
+eval:
+  per_language: true
+  save_predictions: true
+
+logging:
+  log_steps: 50
+  eval_strategy: epoch
+  save_strategy: epoch
+  save_total_limit: 2
+  report_to: []   # set to ["wandb"] to enable W&B
+  run_name: null   # auto-generated from model + lang if null
+
+paths:
+  output_dir: ./outputs
+  cache_dir: ./.cache/huggingface

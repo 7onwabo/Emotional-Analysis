@@ -1,0 +1,38 @@
+# Target languages — chosen for sufficient BRIGHTER train data and family diversity.
+# Split sizes verified against the HF dataset card.
+
+target_languages:
+  - code: afr
+    name: Afrikaans
+    family: Indo-European (Germanic)
+    region: South Africa
+    brighter_config: afr
+    script: Latin
+    splits: { train: 1222, dev: 196, test: 2130 }
+    notes: Only South African language in BRIGHTER with a train split. Verify the `surprise` label is present once data is downloaded — one secondary source claims it is missing for afr.
+
+  - code: swa
+    name: Swahili
+    family: Niger-Congo (Bantu)
+    region: East Africa (Kenya, Tanzania)
+    brighter_config: swa
+    script: Latin
+    splits: { train: 3307, dev: 1102, test: 3312 }
+    notes: Largest African train split in BRIGHTER after Nigerian Pidgin. Closest typological neighbour for downstream Bantu transfer experiments.
+
+  - code: hau
+    name: Hausa
+    family: Afro-Asiatic (Chadic)
+    region: West Africa (Nigeria, Niger)
+    brighter_config: hau
+    script: Latin
+    splits: { train: 2145, dev: 712, test: 2160 }
+    notes: Different language family from afr and swa — gives a real cross-family comparison in the equity/fairness analysis.
+
+# Optional sources for ablations or back-translation pivots only.
+# Not reported in the final per-language results.
+auxiliary_languages:
+  - code: eng
+    name: English
+    family: Indo-European (Germanic)
+    use: pipeline validation, back-translation pivot
