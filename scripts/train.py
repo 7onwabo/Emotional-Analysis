@@ -66,12 +66,21 @@ def main() -> None:
             label_names=label_names,
         )
     elif spec.type == "transformer":
+        import numpy as np
+
         from emotion_analysis.models.transformer import build_hf_dataset
         from emotion_analysis.training.trainer import train_transformer
 
         model, tokenizer = build_model(model_key, num_labels=len(label_names))
         train_ds = build_hf_dataset(train_texts, train_labels, tokenizer, spec.max_length)
         dev_ds = build_hf_dataset(dev_texts, dev_labels, tokenizer, spec.max_length)
+
+        arr = np.asarray(train_labels, dtype="float32")
+        pos_counts = arr.sum(axis=0)
+        neg_counts = len(arr) - pos_counts
+        pos_weight = (neg_counts / np.maximum(pos_counts, 1)).tolist()
+        print(f"[train] pos_weight={[round(w,2) for w in pos_weight]}")
+
         artifacts = train_transformer(
             model,
             tokenizer,
@@ -80,6 +89,7 @@ def main() -> None:
             config=cfg,
             output_dir=output_dir,
             label_names=label_names,
+            pos_weight=pos_weight,
         )
     else:
         raise SystemExit(f"Unknown model type: {spec.type}")

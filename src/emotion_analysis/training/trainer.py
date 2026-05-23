@@ -53,6 +53,7 @@ def train_transformer(
     config: Any,
     output_dir: str | Path,
     label_names: list[str] | None = None,
+    pos_weight: list[float] | None = None,
 ) -> TrainArtifacts:
     """Fine-tune via HuggingFace Trainer.
 
@@ -112,6 +113,7 @@ def train_transformer(
 
     import inspect
 
+    kwargs: dict[str, Any] = {"pos_weight": pos_weight}
     trainer_kwargs: dict[str, Any] = dict(
         model=model,
         args=args,
@@ -127,7 +129,22 @@ def train_transformer(
     else:
         trainer_kwargs["tokenizer"] = tokenizer
 
-    trainer = Trainer(**trainer_kwargs)
+    pos_weight = kwargs.get("pos_weight", None)
+    if pos_weight is not None:
+        import torch
+
+        class _WeightedTrainer(Trainer):
+            def compute_loss(self, model, inputs, return_outputs=False, **_kw):
+                labels = inputs.pop("labels")
+                outputs = model(**inputs)
+                logits = outputs.logits
+                weight = torch.tensor(pos_weight, dtype=logits.dtype, device=logits.device)
+                loss = torch.nn.BCEWithLogitsLoss(pos_weight=weight)(logits, labels)
+                return (loss, outputs) if return_outputs else loss
+
+        trainer = _WeightedTrainer(**trainer_kwargs)
+    else:
+        trainer = Trainer(**trainer_kwargs)
 
     trainer.train()
     metrics = trainer.evaluate()
