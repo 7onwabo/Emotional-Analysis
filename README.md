@@ -38,8 +38,8 @@ This set keeps one South African language (Afrikaans), covers three distinct fam
 ├── scripts/
 │   ├── download_data.py        # ✅ pulls BRIGHTER -> data/raw/brighter
 │   ├── eda.py                  # ✅ per-lang stats -> reports/eda
-│   ├── train.py                # ⏳ scaffold (phase 2)
-│   └── evaluate.py             # ⏳ scaffold (phase 2)
+│   ├── train.py                # ✅ baseline + transformer training
+│   └── evaluate.py             # ✅ per-language test report
 ├── src/emotion_analysis/
 │   ├── data/                   # loaders, preprocessing, augmentation
 │   ├── models/                 # baselines + transformer wrappers
@@ -72,9 +72,11 @@ We work in **phases**. Phase 1 (data layer) is **done**; phases 2+ (modeling, ev
 | Phase | What | Status |
 |---|---|---|
 | **1. Data** | download BRIGHTER, load → clean multi-hot `EmotionExample`, EDA | ✅ done |
-| 2. Models | sklearn baselines + transformer fine-tune wiring | ⏳ next |
-| 3. Eval | per-language F1 report, error analysis, explainability | ⏳ |
+| **2. Models** | sklearn baselines + transformer fine-tune + trainer + train/eval scripts | ✅ code complete |
+| 3. Eval+ | per-language F1 report + confusion + error tables ✅; SHAP/LIME explainability ⏳ | partial |
 | 4. Report | ACL-template paper, responsible-NLP reflection | ⏳ |
+
+> Phase 2 code is written but **not yet run end-to-end** (needs deps installed + the BRIGHTER download). Run `make setup` then the commands below to train/evaluate.
 
 ### What phase 1 gives you
 
@@ -86,19 +88,46 @@ We work in **phases**. Phase 1 (data layer) is **done**; phases 2+ (modeling, ev
 
 All knobs live in `configs/*.yaml` — change languages/labels/preprocessing there, not in code.
 
+## Setup — read before installing
+
+You need a **native Python 3.10–3.12 with PyTorch wheels**. Picking the wrong interpreter is the #1 setup failure:
+
+| Platform | Use | Avoid |
+|---|---|---|
+| **Apple Silicon (M1/M2/M3)** | native **arm64** Python 3.12 — `brew install python@3.12` → `python3.12` | x86_64 / Rosetta Anaconda (`platform.machine()=='x86_64'`) → torch caps at 2.2.2, llvmlite won't build; Python 3.13/3.14 → no torch wheels yet |
+| **Windows / Linux** | Python 3.10–3.12 (`python` / `py -3.12`) | 3.13+ until torch ships wheels |
+
+Check your interpreter first:
+
+```bash
+python3.12 -c "import platform,sys; print(platform.machine(), sys.version.split()[0])"
+# Apple Silicon must print: arm64 3.12.x
+```
+
+`make setup` defaults to `python3.12`. Override per machine: `make setup PYTHON=python` (Windows) or `make setup PYTHON=python3.11`.
+
 ## Quick start
 
 ```bash
-make setup                          # create .venv + install deps (editable)
+make setup                          # .venv via $(PYTHON) + install .[dev,explain,augment]; prints arch/torch check
 cp .env.example .env                # add HF_TOKEN only if a dataset is gated
 
-.venv/bin/python scripts/download_data.py   # pull BRIGHTER -> data/raw/brighter
-.venv/bin/python scripts/eda.py             # stats -> reports/eda
-.venv/bin/pytest -q                         # run tests
+make download                       # pull BRIGHTER -> data/raw/brighter
+.venv/bin/python scripts/eda.py     # stats -> reports/eda
+make test                           # run pytest in the venv
 
-# phase 2 (scaffold only, not wired yet):
-# make train / make eval
+# phase 2 — train + evaluate:
+.venv/bin/python scripts/train.py --model tfidf_logreg --language afr     # cheap baseline (start here)
+.venv/bin/python scripts/train.py --model afro_xlmr_base --language all    # transformer (CPU-slow on Mac)
+.venv/bin/python scripts/evaluate.py --checkpoint outputs/tfidf_logreg_afr --language afr
 ```
+
+> If `make setup` fails on torch/llvmlite, you almost certainly used an x86_64 or 3.13+ interpreter — `rm -rf .venv` and re-run with a correct `PYTHON=` (see table above).
+
+Training writes to `outputs/{model}_{lang}/` (fitted pipeline or HF checkpoint +
+`dev_metrics.json` + `run_config.json`). Evaluation writes per-language reports
+and error tables to `reports/eval/{checkpoint}/`. `--language all` pools afr+swa+hau;
+a single ISO code trains/evaluates one language.
 
 Useful flags:
 
@@ -109,8 +138,10 @@ Useful flags:
 .venv/bin/python scripts/download_data.py --force
 ```
 
-> **Note:** `make train` / `make eval` still raise `NotImplementedError` — that is phase 2.
-> EthioEmo / AfriSenti / AfriHate loaders are also phase 2; BRIGHTER alone covers all three target languages.
+**Optional extras:**
+
+- `make setup-shap` — adds SHAP (phase 3 explainability). Kept out of the default install because it pulls `numba`/`llvmlite`, which build from source on some toolchains. LIME + Captum (in `[explain]`) are wheel-only and cover most of the analysis.
+- EthioEmo / AfriSenti / AfriHate loaders are deferred; BRIGHTER alone covers all three target languages.
 
 ## Models on roadmap
 
