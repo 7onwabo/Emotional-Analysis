@@ -235,3 +235,4 @@ mlruns/
 *.safetensors
 
 *.pdf
+docs
