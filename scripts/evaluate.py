@@ -132,10 +132,15 @@ def main() -> None:
     )
     (out_dir / f"{args.split}_error_examples.json").write_text(json.dumps(errors, indent=2))
 
-    print(f"[eval] overall f1_macro={report['overall']['f1_macro']:.4f}")
+    print(f"[eval] overall f1_macro={report['overall']['f1_macro']:.4f} f1_micro={report['overall']['f1_micro']:.4f}")
     for lang in languages:
         if lang in report:
-            print(f"[eval]   {lang}: f1_macro={report[lang]['f1_macro']:.4f} (n={report[lang]['n_examples']})")
+            zs = report[lang]["zero_support_labels"]
+            zs_note = f" zero-support={zs}" if zs else ""
+            print(
+                f"[eval]   {lang}: f1_macro={report[lang]['f1_macro']:.4f} "
+                f"f1_micro={report[lang]['f1_micro']:.4f} (n={report[lang]['n_examples']}){zs_note}"
+            )
     print(f"[eval] report -> {out_dir}")
 
     if args.explain:

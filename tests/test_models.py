@@ -72,6 +72,10 @@ def test_per_language_report_groups():
     # micro-F1 is robust to zero-support labels; perfect preds -> 1.0
     assert rep["overall"]["f1_micro"] == pytest.approx(1.0)
     assert rep["overall"]["hamming_loss"] == pytest.approx(0.0)
+    # only anger/disgust/fear fire here -> joy/sadness/surprise are zero-support
+    assert set(rep["overall"]["zero_support_labels"]) == {"joy", "sadness", "surprise"}
+    # swa slice only has the fear-positive row
+    assert set(rep["swa"]["zero_support_labels"]) == {"anger", "disgust", "joy", "sadness", "surprise"}
 
 
 def test_confusion_and_errors():
