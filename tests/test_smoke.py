@@ -15,7 +15,7 @@ from emotion_analysis.utils.seeds import set_seed
 
 def test_label_constants() -> None:
     assert EMOTION_LABELS == ["anger", "disgust", "fear", "joy", "sadness", "surprise"]
-    assert set(TARGET_LANGUAGES) == {"afr", "swa", "hau"}
+    assert set(TARGET_LANGUAGES) == {"afr", "swa", "hau", "amh", "tir"}
 
 
 def test_preprocess_strips_urls_and_mentions() -> None:
@@ -33,7 +33,8 @@ def test_multilabel_to_vector_order() -> None:
 def test_configs_load() -> None:
     cfg = load_config("training", "data", "languages", "models")
     assert cfg.seed == 42
-    assert len(cfg.target_languages) == 3
+    assert len(cfg.target_languages) == 5
+    assert {lang.source for lang in cfg.target_languages} == {"brighter", "ethioemo"}
     assert "afro_xlmr_base" in cfg.models
 
 

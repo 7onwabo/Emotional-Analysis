@@ -19,8 +19,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from omegaconf import OmegaConf  # noqa: E402
 
 from emotion_analysis import EMOTION_LABELS  # noqa: E402
-from emotion_analysis.data.loaders import load_brighter_examples, to_arrays  # noqa: E402
-from emotion_analysis.data.preprocessing import preprocess_examples  # noqa: E402
+from emotion_analysis.data.datasets import build_split, resolve_languages  # noqa: E402
 from emotion_analysis.models.registry import build_model  # noqa: E402
 from emotion_analysis.utils.config import load_config  # noqa: E402
 from emotion_analysis.utils.seeds import set_seed  # noqa: E402
@@ -32,36 +31,6 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--language", default="all", help="Target ISO code, or 'all' for every target")
     p.add_argument("--override", nargs="*", default=[], help="Dotlist overrides, e.g. train.batch_size=8")
     return p.parse_args()
-
-
-def resolve_languages(cfg, language: str) -> list[str]:
-    targets = [lang.brighter_config for lang in cfg.target_languages]
-    if language == "all":
-        return targets
-    if language not in targets:
-        raise SystemExit(f"Unknown language '{language}'. Targets: {targets}")
-    return [language]
-
-
-def load_split(cfg, languages: list[str], split: str):
-    """Load + preprocess BRIGHTER examples across languages -> (texts, labels, langs)."""
-    pp = cfg.preprocessing
-    raw_dir = Path(cfg.paths.raw) / "brighter"
-    all_examples = []
-    for lang in languages:
-        examples = load_brighter_examples(lang, split=split, raw_dir=raw_dir)
-        examples = preprocess_examples(
-            examples,
-            min_chars=pp.min_chars,
-            max_chars=pp.max_chars,
-            lowercase=pp.lowercase,
-            strip_urls=pp.strip_urls,
-            strip_mentions=pp.strip_mentions,
-            strip_emoji=pp.strip_emoji,
-            normalize_whitespace=pp.normalize_whitespace,
-        )
-        all_examples.extend(examples)
-    return to_arrays(all_examples)
 
 
 def main() -> None:
@@ -77,8 +46,8 @@ def main() -> None:
 
     print(f"[train] model={model_key} type={spec.type} languages={languages} seed={cfg.seed}")
 
-    train_texts, train_labels, _ = load_split(cfg, languages, "train")
-    dev_texts, dev_labels, _ = load_split(cfg, languages, "dev")
+    train_texts, train_labels, _ = build_split(cfg, languages, "train")
+    dev_texts, dev_labels, _ = build_split(cfg, languages, "dev")
     print(f"[train] train={len(train_texts)} dev={len(dev_texts)}")
 
     output_dir = Path(cfg.paths.output_dir) / f"{model_key}_{lang_tag}"

@@ -11,10 +11,12 @@ datasets:
     # so no cross-lingual donor data is required.
 
   ethioemo:
-    hf_id: Ethio-NLP/EthioEmo
+    hf_id: Tadesse/EthioEmo
     splits: [train, dev, test]
     text_column: text
     label_columns: [anger, disgust, fear, joy, sadness, surprise]
+    # configs: amh, tir (Ge'ez script — used as targets); orm, som also available.
+    # Same id/text + 6 int64 emotion columns as BRIGHTER, so the loader is shared.
 
   afrisenti:
     hf_id: shmuhammad/AfriSenti-twitter-sentiment

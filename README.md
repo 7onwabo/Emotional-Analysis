@@ -1,20 +1,22 @@
 # Emotion Analysis — African Languages
 
-Multilabel emotion classification for **Afrikaans (afr)**, **Swahili (swa)**, and **Hausa (hau)** using the BRIGHTER + EthioEmo dataset.
+Multilabel emotion classification across five African languages from **BRIGHTER** (Afrikaans, Swahili, Hausa) and **EthioEmo** (Amharic, Tigrinya), spanning **Latin and Ge'ez scripts**.
 
 COS 760 group project — University of Pretoria.
 
-## Why these three languages
+## Target languages
 
-BRIGHTER includes 17 African languages but only 11 carry a non-empty train split. isiZulu and isiXhosa were the obvious South African picks but both have `train=0` — direct fine-tuning is impossible without cross-lingual donor data. To keep the project scope realistic the targets were switched to languages with enough train data to fine-tune directly:
+Five languages across two datasets, two scripts, and three families — chosen for direct-fine-tune-able train splits and maximal contrast for the RQ2 linguistic-factor analysis.
 
-| Language | Config | Train | Dev | Test | Family | Region |
-|---|---|---|---|---|---|---|
-| Afrikaans | `afr` | 1,222 | 196 | 2,130 | Indo-European (Germanic) | South Africa |
-| Swahili | `swa` | 3,307 | 1,102 | 3,312 | Niger-Congo (Bantu) | East Africa |
-| Hausa | `hau` | 2,145 | 712 | 2,160 | Afro-Asiatic (Chadic) | West Africa |
+| Language | Code | Source | Script | Train | Dev | Test | Family | Region |
+|---|---|---|---|---|---|---|---|---|
+| Afrikaans | `afr` | BRIGHTER | Latin | 1,222 | 196 | 2,130 | Indo-European (Germanic) | South Africa |
+| Swahili | `swa` | BRIGHTER | Latin | 3,307 | 1,102 | 3,312 | Niger-Congo (Bantu) | East Africa |
+| Hausa | `hau` | BRIGHTER | Latin | 2,145 | 712 | 2,160 | Afro-Asiatic (Chadic) | West Africa |
+| Amharic | `amh` | EthioEmo | Ge'ez | 3,549 | 592 | 1,774 | Afro-Asiatic (Semitic) | Ethiopia |
+| Tigrinya | `tir` | EthioEmo | Ge'ez | 3,681 | 614 | 1,840 | Afro-Asiatic (Semitic) | Ethiopia / Eritrea |
 
-This set keeps one South African language (Afrikaans), covers three distinct families, and spans three regions — enough contrast for the rubric's equity / fairness analysis without requiring cross-lingual transfer as a methodological dependency.
+Both datasets share the **same 6-label int64 multilabel schema** (`id, text, anger…surprise`), so one loader serves both. The Latin-vs-Ge'ez script split and the resource/morphology spread are central to RQ2 (what linguistic factors explain performance gaps). isiZulu/isiXhosa were dropped earlier (BRIGHTER `train=0` — no direct fine-tuning); EthioEmo's `orm`/`som` (both Latin) remain available if the set is widened.
 
 ## Emotion labels (BRIGHTER multilabel schema)
 
@@ -39,7 +41,8 @@ This set keeps one South African language (Afrikaans), covers three distinct fam
 │   ├── download_data.py        # ✅ pulls BRIGHTER -> data/raw/brighter
 │   ├── eda.py                  # ✅ per-lang stats -> reports/eda
 │   ├── train.py                # ✅ baseline + transformer training
-│   └── evaluate.py             # ✅ per-language test report
+│   ├── evaluate.py             # ✅ per-language test report + error tables
+│   └── explain.py              # ✅ LIME / Captum IG token attributions
 ├── src/emotion_analysis/
 │   ├── data/                   # loaders, preprocessing, augmentation
 │   ├── models/                 # baselines + transformer wrappers
@@ -72,11 +75,11 @@ We work in **phases**. Phase 1 (data layer) is **done**; phases 2+ (modeling, ev
 | Phase | What | Status |
 |---|---|---|
 | **1. Data** | download BRIGHTER, load → clean multi-hot `EmotionExample`, EDA | ✅ done |
-| **2. Models** | sklearn baselines + transformer fine-tune + trainer + train/eval scripts | ✅ code complete |
-| 3. Eval+ | per-language F1 report + confusion + error tables ✅; SHAP/LIME explainability ⏳ | partial |
+| **2. Models** | sklearn baselines + transformer fine-tune + trainer + train/eval scripts | ✅ done (baseline + transformer trained) |
+| **3. Eval+** | per-language F1 + confusion + error tables ✅; LIME + Captum IG explainability ✅; SHAP optional | ✅ done |
 | 4. Report | ACL-template paper, responsible-NLP reflection | ⏳ |
 
-> Phase 2 code is written but **not yet run end-to-end** (needs deps installed + the BRIGHTER download). Run `make setup` then the commands below to train/evaluate.
+> **RQ coverage:** RQ1/RQ2 are served by the BRIGHTER + transformer + per-language report path above. Two datasets named in the RQs are **not yet wired**: **EthioEmo** (RQ1) and **AfriSenti/AfriHate** (RQ3, transfer/augmentation). These are required, not optional — see the roadmap.
 
 ### What phase 1 gives you
 
@@ -118,9 +121,20 @@ make test                           # run pytest in the venv
 
 # phase 2 — train + evaluate:
 .venv/bin/python scripts/train.py --model tfidf_logreg --language afr     # cheap baseline (start here)
-.venv/bin/python scripts/train.py --model afro_xlmr_base --language all    # transformer (CPU-slow on Mac)
+.venv/bin/python scripts/train.py --model afro_xlmr_base --language all    # transformer
 .venv/bin/python scripts/evaluate.py --checkpoint outputs/tfidf_logreg_afr --language afr
+.venv/bin/python scripts/explain.py --checkpoint outputs/tfidf_logreg_afr --method lime   # token attributions
 ```
+
+**Low-RAM training (16 GB Apple Silicon).** The default transformer config OOMs on 16 GB MPS. Use gradient checkpointing + a small batch:
+
+```bash
+.venv/bin/python scripts/train.py --model afro_xlmr_base --language all \
+  --override train.batch_size=4 train.eval_batch_size=8 train.gradient_accumulation_steps=4 \
+             train.num_epochs=3 train.gradient_checkpointing=true train.freeze_base_layers=6
+```
+
+`gradient_checkpointing` recomputes activations (big memory cut, ~20% slower); `freeze_base_layers=N` freezes embeddings + the bottom N encoder layers (less optimizer/grad memory). 24 GB+ machines can drop these and raise `batch_size`.
 
 > If `make setup` fails on torch/llvmlite, you almost certainly used an x86_64 or 3.13+ interpreter — `rm -rf .venv` and re-run with a correct `PYTHON=` (see table above).
 

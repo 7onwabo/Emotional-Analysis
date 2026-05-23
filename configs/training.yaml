@@ -26,6 +26,8 @@ train:
   max_grad_norm: 1.0
   fp16: false
   bf16: false
+  gradient_checkpointing: false   # set true on low-RAM (e.g. 16GB MPS) to trade compute for memory
+  freeze_base_layers: 0           # freeze the bottom N encoder layers (+embeddings) to cut optimizer/grad memory
   early_stopping_patience: 2
   metric_for_best_model: f1_macro
   greater_is_better: true

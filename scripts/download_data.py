@@ -26,12 +26,12 @@ from emotion_analysis.utils.config import load_config  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Download BRIGHTER datasets")
+    p = argparse.ArgumentParser(description="Download BRIGHTER + EthioEmo target-language splits")
     p.add_argument(
         "--languages",
         nargs="+",
         default=None,
-        help="BRIGHTER language configs to download (default: configs/languages.yaml targets).",
+        help="Language codes to download (default: all configs/languages.yaml targets).",
     )
     p.add_argument(
         "--splits",
@@ -94,35 +94,37 @@ def main() -> None:
     args = parse_args()
     cfg = load_config("data", "languages")
 
-    target_codes = args.languages or [lang.brighter_config for lang in cfg.target_languages]
-    splits = args.splits or list(cfg.datasets.brighter.splits)
+    # Group requested target languages by their dataset source.
+    targets = cfg.target_languages
+    if args.languages:
+        targets = [t for t in targets if t.code in set(args.languages)]
+    by_source: dict[str, list[str]] = {}
+    for t in targets:
+        by_source.setdefault(t.source, []).append(t.code)
+
     label_cols = list(cfg.datasets.brighter.label_columns) or EMOTION_LABELS
+    raw_root = Path(cfg.paths.raw)
 
-    out_dir = Path(cfg.paths.raw) / "brighter"
-    out_dir.mkdir(parents=True, exist_ok=True)
+    for source, codes in by_source.items():
+        ds_cfg = cfg.datasets[source]
+        splits = args.splits or list(ds_cfg.splits)
+        out_dir = raw_root / source
+        out_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"[download] hf_id={cfg.datasets.brighter.hf_id}")
-    print(f"[download] languages={target_codes} splits={splits}")
-    print(f"[download] out_dir={out_dir}")
-
-    manifest: dict[str, Any] = {
-        "hf_id": cfg.datasets.brighter.hf_id,
-        "label_columns": label_cols,
-        "languages": {},
-    }
-    for lang in target_codes:
-        manifest["languages"][lang] = download_language(
-            hf_id=cfg.datasets.brighter.hf_id,
-            lang=lang,
-            splits=splits,
-            out_dir=out_dir,
-            label_cols=label_cols,
-            force=args.force,
-        )
-
-    manifest_path = out_dir / "manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2))
-    print(f"[download] wrote manifest -> {manifest_path}")
+        print(f"[download] source={source} hf_id={ds_cfg.hf_id} languages={codes} splits={splits}")
+        manifest: dict[str, Any] = {"hf_id": ds_cfg.hf_id, "label_columns": label_cols, "languages": {}}
+        for lang in codes:
+            manifest["languages"][lang] = download_language(
+                hf_id=ds_cfg.hf_id,
+                lang=lang,
+                splits=splits,
+                out_dir=out_dir,
+                label_cols=label_cols,
+                force=args.force,
+            )
+        manifest_path = out_dir / "manifest.json"
+        manifest_path.write_text(json.dumps(manifest, indent=2))
+        print(f"[download] wrote manifest -> {manifest_path}")
 
 
 if __name__ == "__main__":

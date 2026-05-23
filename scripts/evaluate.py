@@ -20,8 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from emotion_analysis import EMOTION_LABELS  # noqa: E402
-from emotion_analysis.data.loaders import load_brighter_examples, to_arrays  # noqa: E402
-from emotion_analysis.data.preprocessing import preprocess_examples  # noqa: E402
+from emotion_analysis.data.datasets import build_split, resolve_languages  # noqa: E402
 from emotion_analysis.evaluation.classification import (  # noqa: E402
     collect_error_examples,
     confusion_per_label,
@@ -38,33 +37,6 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--threshold", type=float, default=None, help="Override decision threshold")
     p.add_argument("--explain", action="store_true", help="Run SHAP/LIME error analysis (phase 3)")
     return p.parse_args()
-
-
-def resolve_languages(cfg, language: str) -> list[str]:
-    targets = [lang.brighter_config for lang in cfg.target_languages]
-    return targets if language == "all" else [language]
-
-
-def load_split(cfg, languages, split):
-    pp = cfg.preprocessing
-    raw_dir = Path(cfg.paths.raw) / "brighter"
-    examples = []
-    for lang in languages:
-        ex = load_brighter_examples(lang, split=split, raw_dir=raw_dir)
-        ex = preprocess_examples(
-            ex,
-            min_chars=pp.min_chars,
-            max_chars=pp.max_chars,
-            lowercase=pp.lowercase,
-            strip_urls=pp.strip_urls,
-            strip_mentions=pp.strip_mentions,
-            strip_emoji=pp.strip_emoji,
-            normalize_whitespace=pp.normalize_whitespace,
-        )
-        examples.extend(ex)
-    texts = [e.text for e in examples]
-    _, labels, langs = to_arrays(examples)
-    return texts, labels, langs
 
 
 def predict_baseline(ckpt: Path, texts: list[str]) -> np.ndarray:
@@ -112,7 +84,7 @@ def main() -> None:
     languages = resolve_languages(cfg, args.language)
 
     print(f"[eval] ckpt={ckpt} languages={languages} split={args.split} threshold={threshold}")
-    texts, labels, langs = load_split(cfg, languages, args.split)
+    texts, labels, langs = build_split(cfg, languages, args.split)
     print(f"[eval] {len(texts)} examples")
 
     is_baseline = (ckpt / "pipeline.joblib").exists()

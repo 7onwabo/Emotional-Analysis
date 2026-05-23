@@ -26,6 +26,25 @@ class TrainArtifacts:
     output_dir: Path
 
 
+def _freeze_base_layers(model: Any, n: int) -> None:
+    """Freeze embeddings + the bottom `n` encoder layers of an XLM-R/BERT model.
+
+    Cuts gradient + optimizer-state memory (only trainable params get Adam state).
+    Best-effort across HF encoder naming; no-op if the structure isn't found.
+    """
+    base = getattr(model, "base_model", model)
+    embeddings = getattr(base, "embeddings", None)
+    if embeddings is not None:
+        for p in embeddings.parameters():
+            p.requires_grad_(False)
+    encoder = getattr(base, "encoder", None)
+    layers = getattr(encoder, "layer", None) if encoder is not None else None
+    if layers is not None:
+        for layer in layers[:n]:
+            for p in layer.parameters():
+                p.requires_grad_(False)
+
+
 def train_transformer(
     model: Any,
     tokenizer: Any,
@@ -56,6 +75,14 @@ def train_transformer(
     log = config.logging
     threshold = float(config.task.threshold)
 
+    freeze_n = int(getattr(t, "freeze_base_layers", 0) or 0)
+    if freeze_n > 0:
+        _freeze_base_layers(model, freeze_n)
+
+    gradient_checkpointing = bool(getattr(t, "gradient_checkpointing", False))
+    if gradient_checkpointing:
+        model.config.use_cache = False  # incompatible with checkpointing
+
     args = TrainingArguments(
         output_dir=str(output_dir),
         num_train_epochs=t.num_epochs,
@@ -78,6 +105,9 @@ def train_transformer(
         greater_is_better=t.greater_is_better,
         report_to=list(log.report_to),
         seed=config.seed,
+        dataloader_pin_memory=False,  # MPS does not support pinned memory
+        gradient_checkpointing=gradient_checkpointing,
+        gradient_checkpointing_kwargs={"use_reentrant": False} if gradient_checkpointing else None,
     )
 
     import inspect
