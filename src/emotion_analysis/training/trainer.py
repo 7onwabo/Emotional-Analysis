@@ -80,16 +80,24 @@ def train_transformer(
         seed=config.seed,
     )
 
-    trainer = Trainer(
+    import inspect
+
+    trainer_kwargs: dict[str, Any] = dict(
         model=model,
         args=args,
         train_dataset=train_ds,
         eval_dataset=eval_ds,
-        tokenizer=tokenizer,
         data_collator=DataCollatorWithPadding(tokenizer),
         compute_metrics=hf_compute_metrics_fn(label_names, threshold=threshold),
         callbacks=[EarlyStoppingCallback(early_stopping_patience=t.early_stopping_patience)],
     )
+    # `tokenizer=` was renamed to `processing_class=` (transformers >=4.46).
+    if "processing_class" in inspect.signature(Trainer.__init__).parameters:
+        trainer_kwargs["processing_class"] = tokenizer
+    else:
+        trainer_kwargs["tokenizer"] = tokenizer
+
+    trainer = Trainer(**trainer_kwargs)
 
     trainer.train()
     metrics = trainer.evaluate()
