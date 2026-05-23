@@ -1,0 +1,63 @@
+# Target languages. `code` is the canonical identifier AND the per-dataset
+# config name (they coincide for both BRIGHTER and EthioEmo). `source` selects
+# which loader/dataset the language comes from. Split sizes verified against the
+# HF datasets.
+
+target_languages:
+  # --- BRIGHTER (brighter-dataset/BRIGHTER-emotion-categories), Latin script ---
+  - code: afr
+    name: Afrikaans
+    family: Indo-European (Germanic)
+    region: South Africa
+    source: brighter
+    script: Latin
+    splits: { train: 1222, dev: 196, test: 2130 }
+    notes: Only South African language in BRIGHTER with a train split. `surprise` has zero positives in the test split (structurally absent) — report micro-F1 alongside macro for afr.
+
+  - code: swa
+    name: Swahili
+    family: Niger-Congo (Bantu)
+    region: East Africa (Kenya, Tanzania)
+    source: brighter
+    script: Latin
+    splits: { train: 3307, dev: 1102, test: 3312 }
+    notes: Largest African train split in BRIGHTER after Nigerian Pidgin. Closest typological neighbour for downstream Bantu transfer experiments.
+
+  - code: hau
+    name: Hausa
+    family: Afro-Asiatic (Chadic)
+    region: West Africa (Nigeria, Niger)
+    source: brighter
+    script: Latin
+    splits: { train: 2145, dev: 712, test: 2160 }
+    notes: Different language family from afr and swa — gives a real cross-family comparison in the equity/fairness analysis.
+
+  # --- EthioEmo (Tadesse/EthioEmo), Ge'ez script — same 6-label multilabel schema ---
+  - code: amh
+    name: Amharic
+    family: Afro-Asiatic (Semitic)
+    region: Ethiopia
+    source: ethioemo
+    script: Ge'ez (Ethiopic)
+    splits: { train: 3549, dev: 592, test: 1774 }
+    notes: Ge'ez script — gives a script + morphology contrast against the Latin-script BRIGHTER languages, central to the RQ2 linguistic-factor analysis.
+
+  - code: tir
+    name: Tigrinya
+    family: Afro-Asiatic (Semitic)
+    region: Ethiopia / Eritrea
+    source: ethioemo
+    script: Ge'ez (Ethiopic)
+    splits: { train: 3681, dev: 614, test: 1840 }
+    notes: Second Ge'ez-script language; lower-resource, morphologically rich. Expected performance gap is a finding for RQ2, not a failure.
+
+# Optional sources for ablations or back-translation pivots only.
+# Not reported in the final per-language results.
+auxiliary_languages:
+  - code: eng
+    name: English
+    family: Indo-European (Germanic)
+    use: pipeline validation, back-translation pivot
+
+# Other EthioEmo configs available if the language set is widened later
+# (both Latin script): orm (Afaan Oromo), som (Somali).

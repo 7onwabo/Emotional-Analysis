@@ -1,0 +1,49 @@
+# Model registry. `key` is what gets passed to --model on the CLI.
+
+models:
+  # --- Baselines (sklearn) ---
+  tfidf_logreg:
+    type: sklearn
+    vectorizer: tfidf
+    classifier: logistic_regression
+    params:
+      ngram_range: [1, 2]
+      max_features: 50000
+      C: 1.0
+
+  tfidf_svm:
+    type: sklearn
+    vectorizer: tfidf
+    classifier: linear_svc
+    params:
+      ngram_range: [1, 2]
+      max_features: 50000
+      C: 1.0
+
+  # --- Transformer fine-tunes ---
+  afro_xlmr_base:
+    type: transformer
+    hf_id: Davlan/afro-xlmr-base
+    max_length: 128
+    notes: African-tuned XLM-R, strong default for SA languages
+
+  afriberta_large:
+    type: transformer
+    hf_id: castorini/afriberta_large
+    max_length: 128
+    notes: trained on African corpora, weaker for Afrikaans
+
+  xlm_roberta_base:
+    type: transformer
+    hf_id: FacebookAI/xlm-roberta-base
+    max_length: 128
+    notes: general multilingual baseline
+
+  mbert:
+    type: transformer
+    hf_id: google-bert/bert-base-multilingual-cased
+    max_length: 128
+    notes: classic multilingual baseline
+
+# Default model used if --model not passed.
+default: afro_xlmr_base
