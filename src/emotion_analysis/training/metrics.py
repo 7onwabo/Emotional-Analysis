@@ -21,15 +21,30 @@ def compute_multilabel_metrics(
     `logits` shape: (N, num_labels). Sigmoid applied internally.
     `labels` shape: (N, num_labels), multi-hot {0,1}.
     """
-    from sklearn.metrics import (
-        f1_score,
-        precision_score,
-        recall_score,
-        hamming_loss,
-    )
-
     probs = 1.0 / (1.0 + np.exp(-logits))
     preds = (probs >= threshold).astype(int)
+    return metrics_from_predictions(preds, labels, label_names=label_names)
+
+
+def metrics_from_predictions(
+    preds: np.ndarray,
+    labels: np.ndarray,
+    label_names: list[str] | None = None,
+) -> dict[str, float]:
+    """Compute macro/micro/weighted F1 + precision/recall + hamming from hard 0/1 preds.
+
+    Used by the sklearn baseline path (which yields predictions directly) and
+    by `compute_multilabel_metrics` after thresholding logits.
+    """
+    from sklearn.metrics import (
+        f1_score,
+        hamming_loss,
+        precision_score,
+        recall_score,
+    )
+
+    preds = np.asarray(preds).astype(int)
+    labels = np.asarray(labels).astype(int)
 
     metrics: dict[str, float] = {
         "f1_macro": float(f1_score(labels, preds, average="macro", zero_division=0)),
