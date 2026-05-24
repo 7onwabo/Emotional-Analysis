@@ -928,3 +928,127 @@ Writing model shards: 100%|█████████████████�
 Writing model shards: 100%|███████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.46s/it]
 [transfer] dev f1_macro=0.5210
 [transfer] artifacts -> outputs/afro_xlmr_base_afrisenti_transfer_all
+(.venv) ) mphotsotetsi@192 Emotional-Analysis % PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 python scripts/augment_train.py \
+    --languages afr --model afro_xlmr_base --max-per-lang 300 \
+    --override train.batch_size=4 train.eval_batch_size=8 \
+               train.gradient_accumulation_steps=4 train.num_epochs=3 \
+               train.gradient_checkpointing=true train.freeze_base_layers=6
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[augment] afr: augmenting 300 examples via back-translation...
+[augment]   afr: 100/300 done, 86 augmented so far
+[augment]   afr: 200/300 done, 173 augmented so far
+[augment]   afr: 300/300 done, 260 augmented so far
+[augment] total augmented examples: 260
+[augment] combined train size: 17606 (original=17346, aug=260)
+Loading weights: 100%|██████████████████████████████████████████████████████████████| 197/197 [00:00<00:00, 6227.46it/s]
+[transformers] XLMRobertaForSequenceClassification LOAD REPORT from: Davlan/afro-xlmr-base
+Key                        | Status     | 
+---------------------------+------------+-
+lm_head.layer_norm.weight  | UNEXPECTED | 
+lm_head.bias               | UNEXPECTED | 
+lm_head.dense.bias         | UNEXPECTED | 
+lm_head.layer_norm.bias    | UNEXPECTED | 
+lm_head.dense.weight       | UNEXPECTED | 
+classifier.out_proj.weight | MISSING    | 
+classifier.dense.bias      | MISSING    | 
+classifier.dense.weight    | MISSING    | 
+classifier.out_proj.bias   | MISSING    | 
+
+Notes:
+- UNEXPECTED:   can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Map: 100%|██████████████████████████████████████████████████████████████| 17606/17606 [00:00<00:00, 49331.86 examples/s]
+Map: 100%|████████████████████████████████████████████████████████████████| 3790/3790 [00:00<00:00, 55727.81 examples/s]
+[augment] pos_weight=[4.58, 3.73, 17.75, 4.06, 5.13, 10.58]
+[transformers] warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.
+{'loss': '4.587', 'grad_norm': '4.293', 'learning_rate': '2.961e-06', 'epoch': '0.04543'}                               
+{'loss': '4.503', 'grad_norm': '6.115', 'learning_rate': '5.982e-06', 'epoch': '0.09087'}                               
+{'loss': '4.687', 'grad_norm': '7.356', 'learning_rate': '9.003e-06', 'epoch': '0.1363'}                                
+{'loss': '4.507', 'grad_norm': '11.25', 'learning_rate': '1.202e-05', 'epoch': '0.1817'}                                
+{'loss': '4.471', 'grad_norm': '10.52', 'learning_rate': '1.505e-05', 'epoch': '0.2272'}                                
+{'loss': '4.311', 'grad_norm': '10.03', 'learning_rate': '1.807e-05', 'epoch': '0.2726'}                                
+{'loss': '4.254', 'grad_norm': '24.92', 'learning_rate': '1.988e-05', 'epoch': '0.318'}                                               
+{'loss': '4.048', 'grad_norm': '21.36', 'learning_rate': '1.954e-05', 'epoch': '0.3635'}                                              
+{'loss': '3.842', 'grad_norm': '26.19', 'learning_rate': '1.921e-05', 'epoch': '0.4089'}                                              
+{'loss': '3.952', 'grad_norm': '13.61', 'learning_rate': '1.887e-05', 'epoch': '0.4543'}                                              
+{'loss': '3.744', 'grad_norm': '14.24', 'learning_rate': '1.853e-05', 'epoch': '0.4998'}                                              
+{'loss': '3.756', 'grad_norm': '12.65', 'learning_rate': '1.82e-05', 'epoch': '0.5452'}                                               
+{'loss': '3.607', 'grad_norm': '15.64', 'learning_rate': '1.786e-05', 'epoch': '0.5906'}                                              
+{'loss': '3.637', 'grad_norm': '20.09', 'learning_rate': '1.752e-05', 'epoch': '0.6361'}                                              
+{'loss': '3.895', 'grad_norm': '25.71', 'learning_rate': '1.719e-05', 'epoch': '0.6815'}                                              
+{'loss': '3.678', 'grad_norm': '13.99', 'learning_rate': '1.685e-05', 'epoch': '0.7269'}                                              
+{'loss': '3.655', 'grad_norm': '33.84', 'learning_rate': '1.651e-05', 'epoch': '0.7724'}                                              
+{'loss': '3.657', 'grad_norm': '35.14', 'learning_rate': '1.618e-05', 'epoch': '0.8178'}                                              
+{'loss': '3.473', 'grad_norm': '21.6', 'learning_rate': '1.584e-05', 'epoch': '0.8632'}                                               
+{'loss': '3.53', 'grad_norm': '15.42', 'learning_rate': '1.55e-05', 'epoch': '0.9087'}                                                
+{'loss': '3.477', 'grad_norm': '21.04', 'learning_rate': '1.517e-05', 'epoch': '0.9541'}                                              
+{'loss': '3.499', 'grad_norm': '18.53', 'learning_rate': '1.483e-05', 'epoch': '0.9995'}                                              
+{'eval_loss': '0.8447', 'eval_f1_macro': '0.4703', 'eval_f1_micro': '0.4788', 'eval_f1_weighted': '0.5002', 'eval_precision_macro': '0.355', 'eval_recall_macro': '0.7632', 'eval_hamming_loss': '0.2397', 'eval_f1_anger': '0.4609', 'eval_f1_disgust': '0.5908', 'eval_f1_fear': '0.2798', 'eval_f1_joy': '0.574', 'eval_f1_sadness': '0.4843', 'eval_f1_surprise': '0.4323', 'eval_runtime': '42.32', 'eval_samples_per_second': '89.57', 'eval_steps_per_second': '11.2', 'epoch': '1'}
+Writing model shards: 100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.86s/it]
+{'loss': '3.175', 'grad_norm': '16.75', 'learning_rate': '1.45e-05', 'epoch': '1.045'}                                                
+{'loss': '3.308', 'grad_norm': '37.94', 'learning_rate': '1.416e-05', 'epoch': '1.09'}                                                
+{'loss': '3.312', 'grad_norm': '46.24', 'learning_rate': '1.382e-05', 'epoch': '1.135'}                                               
+{'loss': '3.323', 'grad_norm': '51.62', 'learning_rate': '1.349e-05', 'epoch': '1.181'}                                               
+{'loss': '3.506', 'grad_norm': '27.38', 'learning_rate': '1.315e-05', 'epoch': '1.226'}                                               
+{'loss': '3.289', 'grad_norm': '22.23', 'learning_rate': '1.281e-05', 'epoch': '1.272'}                                               
+{'loss': '3.328', 'grad_norm': '34.88', 'learning_rate': '1.248e-05', 'epoch': '1.317'}                                               
+{'loss': '3.454', 'grad_norm': '18.8', 'learning_rate': '1.214e-05', 'epoch': '1.363'}                                                
+{'loss': '3.385', 'grad_norm': '30.32', 'learning_rate': '1.18e-05', 'epoch': '1.408'}                                                
+{'loss': '3.194', 'grad_norm': '26.28', 'learning_rate': '1.147e-05', 'epoch': '1.453'}                                               
+{'loss': '3.257', 'grad_norm': '40.49', 'learning_rate': '1.113e-05', 'epoch': '1.499'}                                               
+{'loss': '3.243', 'grad_norm': '38.2', 'learning_rate': '1.079e-05', 'epoch': '1.544'}                                                
+{'loss': '3.348', 'grad_norm': '16.21', 'learning_rate': '1.046e-05', 'epoch': '1.59'}                                                
+{'loss': '3.118', 'grad_norm': '16.09', 'learning_rate': '1.012e-05', 'epoch': '1.635'}                                               
+{'loss': '3.469', 'grad_norm': '37.23', 'learning_rate': '9.785e-06', 'epoch': '1.681'}                                               
+{'loss': '3.099', 'grad_norm': '24.91', 'learning_rate': '9.448e-06', 'epoch': '1.726'}                                               
+{'loss': '3.061', 'grad_norm': '41.13', 'learning_rate': '9.112e-06', 'epoch': '1.771'}                                               
+{'loss': '3.043', 'grad_norm': '22.29', 'learning_rate': '8.775e-06', 'epoch': '1.817'}                                               
+{'loss': '3.216', 'grad_norm': '17.16', 'learning_rate': '8.439e-06', 'epoch': '1.862'}                                               
+{'loss': '3.166', 'grad_norm': '32.86', 'learning_rate': '8.102e-06', 'epoch': '1.908'}                                               
+{'loss': '3.357', 'grad_norm': '32.2', 'learning_rate': '7.766e-06', 'epoch': '1.953'}                                                
+{'loss': '3.056', 'grad_norm': '29.17', 'learning_rate': '7.429e-06', 'epoch': '1.999'}                                               
+{'eval_loss': '0.7976', 'eval_f1_macro': '0.515', 'eval_f1_micro': '0.529', 'eval_f1_weighted': '0.5394', 'eval_precision_macro': '0.4063', 'eval_recall_macro': '0.7386', 'eval_hamming_loss': '0.1909', 'eval_f1_anger': '0.5121', 'eval_f1_disgust': '0.6078', 'eval_f1_fear': '0.3734', 'eval_f1_joy': '0.5778', 'eval_f1_sadness': '0.5644', 'eval_f1_surprise': '0.4544', 'eval_runtime': '47.56', 'eval_samples_per_second': '79.68', 'eval_steps_per_second': '9.966', 'epoch': '2'}
+Writing model shards: 100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.68s/it]
+{'loss': '3.047', 'grad_norm': '38.82', 'learning_rate': '7.093e-06', 'epoch': '2.044'}                                               
+{'loss': '2.868', 'grad_norm': '15.23', 'learning_rate': '6.756e-06', 'epoch': '2.089'}                                               
+{'loss': '3.012', 'grad_norm': '31.4', 'learning_rate': '6.42e-06', 'epoch': '2.134'}                                                 
+{'loss': '2.83', 'grad_norm': '22.83', 'learning_rate': '6.083e-06', 'epoch': '2.18'}                                                 
+{'loss': '3.034', 'grad_norm': '58.85', 'learning_rate': '5.747e-06', 'epoch': '2.225'}                                               
+{'loss': '3.009', 'grad_norm': '42.74', 'learning_rate': '5.41e-06', 'epoch': '2.271'}                                                
+{'loss': '2.945', 'grad_norm': '41.97', 'learning_rate': '5.074e-06', 'epoch': '2.316'}                                               
+{'loss': '2.751', 'grad_norm': '20.56', 'learning_rate': '4.738e-06', 'epoch': '2.362'}                                               
+{'loss': '3.025', 'grad_norm': '46.94', 'learning_rate': '4.401e-06', 'epoch': '2.407'}                                               
+{'loss': '3.043', 'grad_norm': '31.62', 'learning_rate': '4.065e-06', 'epoch': '2.453'}                                               
+{'loss': '2.991', 'grad_norm': '22.93', 'learning_rate': '3.728e-06', 'epoch': '2.498'}                                               
+{'loss': '2.904', 'grad_norm': '26.97', 'learning_rate': '3.392e-06', 'epoch': '2.543'}                                               
+{'loss': '2.851', 'grad_norm': '19.11', 'learning_rate': '3.055e-06', 'epoch': '2.589'}                                               
+{'loss': '2.988', 'grad_norm': '36.81', 'learning_rate': '2.719e-06', 'epoch': '2.634'}                                               
+{'loss': '2.915', 'grad_norm': '19.5', 'learning_rate': '2.382e-06', 'epoch': '2.68'}                                                 
+{'loss': '3.052', 'grad_norm': '73', 'learning_rate': '2.046e-06', 'epoch': '2.725'}                                                  
+{'loss': '2.94', 'grad_norm': '37.01', 'learning_rate': '1.709e-06', 'epoch': '2.771'}                                                
+{'loss': '3.108', 'grad_norm': '27.32', 'learning_rate': '1.373e-06', 'epoch': '2.816'}                                               
+{'loss': '3.03', 'grad_norm': '17.01', 'learning_rate': '1.036e-06', 'epoch': '2.861'}                                                
+{'loss': '2.961', 'grad_norm': '20.33', 'learning_rate': '6.999e-07', 'epoch': '2.907'}                                               
+{'loss': '3.018', 'grad_norm': '12.64', 'learning_rate': '3.634e-07', 'epoch': '2.952'}                                               
+{'loss': '3.153', 'grad_norm': '43.26', 'learning_rate': '2.692e-08', 'epoch': '2.998'}                                               
+{'eval_loss': '0.7859', 'eval_f1_macro': '0.5208', 'eval_f1_micro': '0.5337', 'eval_f1_weighted': '0.5435', 'eval_precision_macro': '0.404', 'eval_recall_macro': '0.764', 'eval_hamming_loss': '0.1936', 'eval_f1_anger': '0.4975', 'eval_f1_disgust': '0.6272', 'eval_f1_fear': '0.3927', 'eval_f1_joy': '0.5922', 'eval_f1_sadness': '0.5507', 'eval_f1_surprise': '0.4646', 'eval_runtime': '43.51', 'eval_samples_per_second': '87.1', 'eval_steps_per_second': '10.89', 'epoch': '3'}
+Writing model shards: 100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.71s/it]
+{'train_runtime': '2749', 'train_samples_per_second': '19.21', 'train_steps_per_second': '1.202', 'train_loss': '3.393', 'epoch': '3'}
+100%|█████████████████████████████████████████████████████████████████████████████████████████████| 3303/3303 [45:49<00:00,  1.20it/s]
+100%|███████████████████████████████████████████████████████████████████████████████████████████████| 474/474 [00:43<00:00, 10.83it/s]
+Writing model shards: 100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.22s/it]
+[augment] dev f1_macro=0.5208
+[augment] artifacts -> outputs/afro_xlmr_base_augmented_afr_all
+((.venv) ) mphotsotetsi@192 Emotional-Analysis %   python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_augmented_afr_all --language all
+[eval] ckpt=outputs/afro_xlmr_base_augmented_afr_all languages=['afr', 'swa', 'hau', 'amh', 'tir', 'orm'] split=test threshold=0.5
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[eval] 12937 examples
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████████| 201/201 [00:00<00:00, 8028.48it/s]
+[eval] overall f1_macro=0.5207 f1_micro=0.5360
+[eval]   afr: f1_macro=0.3360 f1_micro=0.5599 (n=2130) zero-support=['surprise']
+[eval]   swa: f1_macro=0.3235 f1_micro=0.3839 (n=3312)
+[eval]   hau: f1_macro=0.5916 f1_micro=0.5895 (n=2160)
+[eval]   amh: f1_macro=0.5923 f1_micro=0.6472 (n=1774)
+[eval]   tir: f1_macro=0.4775 f1_micro=0.5218 (n=1840)
+[eval]   orm: f1_macro=0.4596 f1_micro=0.5233 (n=1721)
+[eval] report -> reports/eval/afro_xlmr_base_augmented_afr_all

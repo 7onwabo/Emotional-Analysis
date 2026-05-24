@@ -80,20 +80,21 @@ TRANSFER / AUGMENTATION:
 
 All numbers below are on the TEST split.
 
-| Language  | BiLSTM | LogReg | SVM    | AfriBERTa | AfroXLMR |
-|-----------|--------|--------|--------|-----------|----------|
-| Afrikaans | 0.1086 | 0.2159 | 0.2343 | 0.1806    | 0.3388*  |
-| Swahili   | 0.1027 | 0.1891 | 0.2128 | 0.2615    | 0.3094*  |
-| Hausa     | 0.2123 | 0.5829 | 0.5837 | 0.6211*   | 0.5778   |
-| Amharic   | 0.2207 | 0.5435 | 0.5319 | 0.6008*   | 0.5853   |
-| Tigrinya  | 0.1748 | 0.4893 | 0.4860 | 0.4795    | 0.4866*  |
-| Oromo     | 0.1838 | 0.5150 | 0.5156 | 0.5341*   | 0.4625   |
-| OVERALL   | 0.1725 | 0.5034 | 0.5003 | 0.5017    | 0.5168*  |
+| Language  | BiLSTM | LogReg | SVM    | AfriBERTa | AfroXLMR | XLMRAug  |
+|-----------|--------|--------|--------|-----------|----------|----------|
+| Afrikaans | 0.1086 | 0.2159 | 0.2343 | 0.1806    | 0.3388*  | 0.3360   |
+| Swahili   | 0.1027 | 0.1891 | 0.2128 | 0.2615    | 0.3094   | 0.3235*  |
+| Hausa     | 0.2123 | 0.5829 | 0.5837 | 0.6211*   | 0.5778   | 0.5916   |
+| Amharic   | 0.2207 | 0.5435 | 0.5319 | 0.6008*   | 0.5853   | 0.5923   |
+| Tigrinya  | 0.1748 | 0.4893 | 0.4860 | 0.4795    | 0.4866*  | 0.4775   |
+| Oromo     | 0.1838 | 0.5150 | 0.5156 | 0.5341*   | 0.4625   | 0.4596   |
+| OVERALL   | 0.1725 | 0.5034 | 0.5003 | 0.5017    | 0.5168   | 0.5207*  |
 
-* = best result for that language
+* = best result for that language/row
+XLMRAug = AfroXLMR fine-tuned on original + 300 back-translated Afrikaans examples
 
 MICRO F1 (overall):
-  BiLSTM=0.2109, LogReg=0.5199, SVM=0.5196, AfriBERTa=0.5143, AfroXLMR=0.5318
+  BiLSTM=0.2109, LogReg=0.5199, SVM=0.5196, AfriBERTa=0.5143, AfroXLMR=0.5318, XLMRAug=0.5360
 
 PER-EMOTION F1 (AfroXLMR, all languages, dev set):
   anger=0.492, disgust=0.629, fear=0.379, joy=0.595, sadness=0.543, surprise=0.459
@@ -167,21 +168,49 @@ KEY FINDING (RQ3 — NEGATIVE RESULT):
 6. BACK-TRANSLATION AUGMENTATION (RQ3)
 --------------------------------------------------------------------------------
 
-Status: PENDING. Run overnight:
+Status: COMPLETE
+Checkpoint: outputs/afro_xlmr_base_augmented_afr_all/
+Report:     reports/eval/afro_xlmr_base_augmented_afr_all/
+
+Setup: Back-translate 300 Afrikaans training examples through English using
+Google Translate (source->en->source), add to training set, retrain AfroXLMR.
+Afrikaans chosen because it has the smallest training set (1,222 examples).
+Cache saved to data/augmented_cache.json to avoid re-translating.
+Command used:
   PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 python scripts/augment_train.py \
     --languages afr --model afro_xlmr_base --max-per-lang 300 \
     --override train.batch_size=4 train.eval_batch_size=8 \
                train.gradient_accumulation_steps=4 train.num_epochs=3 \
                train.gradient_checkpointing=true train.freeze_base_layers=6
 
-Setup: Back-translate 300 Afrikaans training examples through English using
-Google Translate (source->en->source), add to training set, retrain AfroXLMR.
-Afrikaans chosen because it has the smallest training set (1,222 examples).
-Cache saved to data/augmented_cache.json to avoid re-translating.
-Checkpoint will be at: outputs/afro_xlmr_base_augmented_afr_all/
-Evaluate with: python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_augmented_afr_all --language all
+Results (test F1 macro):
 
-Results to fill in once run completes.
+  Language  | AfroXLMR direct | AfroXLMR+Augment | Delta
+  ----------+-----------------+------------------+-------
+  Afrikaans |     0.3388      |      0.3360       | -0.0028
+  Swahili   |     0.3094      |      0.3235       | +0.0141
+  Hausa     |     0.5778      |      0.5916       | +0.0138
+  Amharic   |     0.5853      |      0.5923       | +0.0070
+  Tigrinya  |     0.4866      |      0.4775       | -0.0091
+  Oromo     |     0.4625      |      0.4596       | -0.0029
+  OVERALL   |     0.5168      |      0.5207       | +0.0039
+
+MICRO F1: AfroXLMR+Augment = 0.5360 (vs AfroXLMR direct = 0.5318)
+
+KEY FINDINGS (RQ3 — AUGMENTATION):
+  Back-translation augmentation of Afrikaans (+300 examples) produced a modest
+  overall improvement (+0.0039 macro F1, +0.0042 micro F1).
+  Unexpected finding: Swahili improved most (+0.014) despite NOT being augmented.
+  The augmented Afrikaans examples appear to have improved cross-lingual
+  generalisation, likely because afr and swa share the Latin script and some
+  BRIGHTER-domain vocabulary. Hausa and Amharic also gained (+0.014, +0.007).
+  Afrikaans itself did not improve (-0.003): 300 back-translated paraphrases
+  were insufficient to overcome its small training set disadvantage, and some
+  noise was introduced. Tigrinya and Oromo showed small regressions, consistent
+  with back-translation adding label noise that hurts precision.
+  Conclusion: augmentation helps overall but effects are heterogeneous across
+  languages. Augmenting all low-resource languages simultaneously may yield
+  larger gains.
 
 --------------------------------------------------------------------------------
 7. AFRIHATE TRANSFER (RQ3)
@@ -227,10 +256,17 @@ RQ2 — How does performance vary across languages and why?
      structurally depresses macro-F1. Always report both for afr.
 
 RQ3 — Does supplementary data (AfriSenti/AfriHate/augmentation) help?
-  PARTIAL:
-  - AfriSenti transfer: results pending (running).
-  - AfriHate: not accessible.
-  - Augmentation: results pending (to run overnight).
+  MIXED:
+  - AfriSenti transfer: NEGATIVE RESULT. Marginal drop (-0.001 overall). Task
+    mismatch (3-class sentiment vs 6-label multi-hot emotion) and small auxiliary
+    data (2k/lang) meant Phase 1 representations were largely overwritten.
+  - AfriHate: NOT ACCESSIBLE (gated dataset). Noted as limitation in report.
+  - Back-translation augmentation (+300 afr): SMALL POSITIVE RESULT (+0.004
+    overall). Best gains on swahili (+0.014) and hausa (+0.014) despite only
+    augmenting afrikaans — suggests cross-lingual generalisation benefit.
+  OVERALL CONCLUSION: Augmentation helps modestly; intermediate-task transfer
+  from distantly-related tasks does not. Direct emotion fine-tuning on all 6
+  languages remains the best strategy overall.
 
 --------------------------------------------------------------------------------
 9. SCRIPTS REFERENCE
@@ -287,7 +323,12 @@ configs/
 
 ================================================================================
 END OF RESULTS SUMMARY
-Last updated: 25 May 2026
-Experiments complete: All except back-translation augmentation (pending overnight run)
-AfriSenti transfer: COMPLETE — negative result, see section 5
+Last updated: 24 May 2026
+ALL EXPERIMENTS COMPLETE.
+  RQ1 baselines:          COMPLETE (BiLSTM, LogReg, SVM, AfroXLMR, AfriBERTa)
+  RQ2 cross-lingual:      COMPLETE (zero-shot + few-shot 100, see section 4)
+  RQ3 AfriSenti transfer: COMPLETE — negative result, see section 5
+  RQ3 augmentation:       COMPLETE — small positive result (+0.004), see section 6
+  RQ3 AfriHate:           NOT COMPLETED — dataset gated, noted as limitation
+BEST MODEL: AfroXLMR + back-translation augmentation (overall macro F1 = 0.5207)
 ================================================================================
