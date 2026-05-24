@@ -187,6 +187,95 @@ def load_examples_by_source(
     )
 
 
-def load_auxiliary(name: str, **kwargs: Any) -> Any:
-    """Load an auxiliary dataset (AfriSenti, AfriHate). Phase 2."""
-    raise NotImplementedError("Auxiliary loaders are phase 2.")
+AFRISENTI_HF_ID = "shmuhammad/AfriSenti-twitter-sentiment"
+AFRIHATE_HF_ID = "shmuhammad/AfriHate"
+
+# Languages in our target set that appear in each auxiliary dataset
+AFRISENTI_OVERLAP = ["hau", "amh", "orm"]  # hau=Hausa, amh=Amharic, orm=Oromo
+AFRIHATE_OVERLAP = ["hau", "amh"]
+
+
+@dataclass
+class AuxExample:
+    text: str
+    label: int   # single integer class label
+    language: str
+
+
+_AFRISENTI_BASE = (
+    "https://raw.githubusercontent.com/afrisenti-semeval/afrisent-semeval-2023/main/data/{lang}/{split}.tsv"
+)
+
+
+def load_afrisenti(
+    language: str,
+    split: str = "train",
+    cache_dir: str | Path | None = None,
+) -> list[AuxExample]:
+    """Load AfriSenti for one language directly from GitHub TSV files.
+
+    Labels: 0=positive, 1=negative, 2=neutral.
+    The HF dataset uses a loading script incompatible with datasets>=3.0, so we
+    download the raw TSV from the upstream GitHub repository instead.
+    """
+    import io
+    import urllib.request
+
+    hf_split = "dev" if split == "validation" else split
+    url = _AFRISENTI_BASE.format(lang=language, split=hf_split)
+    label_map: dict[Any, int] = {"positive": 0, "negative": 1, "neutral": 2}
+
+    try:
+        with urllib.request.urlopen(url, timeout=30) as resp:
+            content = resp.read().decode("utf-8")
+    except Exception as e:
+        raise RuntimeError(f"Could not download AfriSenti {language}/{hf_split} from {url}: {e}")
+
+    examples: list[AuxExample] = []
+    for line in io.StringIO(content):
+        line = line.rstrip("\n")
+        parts = line.split("\t")
+        if len(parts) < 2:
+            continue
+        # Format: tweet\tlabel  (no header row in some files; skip if header)
+        text_col, label_col = parts[0], parts[-1]
+        if label_col in ("label", "labels"):
+            continue  # skip header
+        label = label_map.get(label_col.strip().lower(), 2)
+        if text_col.strip():
+            examples.append(AuxExample(text=text_col.strip(), label=label, language=language))
+    return examples
+
+
+def load_afrihate(
+    language: str,
+    split: str = "train",
+    cache_dir: str | Path | None = None,
+) -> list[AuxExample]:
+    """Load AfriHate for one language. Labels: 0=non-hate, 1=hate."""
+    from datasets import load_dataset
+
+    label_map = {"hate": 1, "non-hate": 0, "normal": 0, 0: 0, 1: 1}
+    ds = load_dataset(
+        AFRIHATE_HF_ID,
+        language,
+        split=split,
+        cache_dir=str(cache_dir) if cache_dir else None,
+        trust_remote_code=True,
+    )
+    examples: list[AuxExample] = []
+    for row in ds:
+        text = row.get("tweet") or row.get("text") or ""
+        raw_label = row.get("label", 0)
+        label = label_map.get(raw_label, 0)
+        examples.append(AuxExample(text=text, label=label, language=language))
+    return examples
+
+
+def load_auxiliary(name: str, language: str, split: str = "train", **kwargs: Any) -> list[AuxExample]:
+    """Load an auxiliary dataset by name: 'afrisenti' or 'afrihate'."""
+    if name == "afrisenti":
+        return load_afrisenti(language, split=split)
+    if name == "afrihate":
+        return load_afrihate(language, split=split)
+    raise ValueError(f"Unknown auxiliary dataset '{name}'. Known: afrisenti, afrihate")

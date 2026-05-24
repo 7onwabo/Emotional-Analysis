@@ -1,16 +1,23 @@
-"""Data augmentation strategies for low-resource emotion data.
+"""Back-translation augmentation for low-resource emotion data.
 
-Planned methods:
-    - back-translation (zul -> eng -> zul via NLLB or Google Translate)
-    - synonym replacement (limited utility for Bantu morphology)
-    - mixup at embedding level (advanced)
-
-Scaffold only.
+Uses deep-translator (Google Translate) to round-trip text through English.
+Each text is translated source->English->source to produce a paraphrase.
 """
 
 from __future__ import annotations
 
+import time
 from typing import Protocol
+
+# ISO 639-1 codes that Google Translate expects for our target languages
+LANG_TO_GOOGLE: dict[str, str] = {
+    "afr": "af",
+    "swa": "sw",
+    "hau": "ha",
+    "amh": "am",
+    "tir": "ti",
+    "orm": "om",
+}
 
 
 class Augmenter(Protocol):
@@ -18,14 +25,31 @@ class Augmenter(Protocol):
 
 
 class BackTranslationAugmenter:
-    """Round-trip translation via a pivot language."""
+    """Round-trip translation: source -> English -> source via Google Translate.
 
-    def __init__(self, pivot: str = "eng", model_id: str | None = None) -> None:
-        self.pivot = pivot
-        self.model_id = model_id
+    Requires `deep-translator` (included in [augment] extras).
+    Rate-limits itself to avoid hitting Google's free-tier limits.
+    """
+
+    def __init__(self, delay: float = 0.3) -> None:
+        self.delay = delay  # seconds between API calls
 
     def augment(self, text: str, language: str) -> list[str]:
-        raise NotImplementedError("TODO: load NLLB or call deep-translator")
+        from deep_translator import GoogleTranslator
+
+        src_code = LANG_TO_GOOGLE.get(language)
+        if src_code is None:
+            return []
+        try:
+            en_text = GoogleTranslator(source=src_code, target="en").translate(text)
+            time.sleep(self.delay)
+            back = GoogleTranslator(source="en", target=src_code).translate(en_text)
+            time.sleep(self.delay)
+            if back and back.strip() != text.strip():
+                return [back]
+        except Exception:
+            pass
+        return []
 
 
 class SynonymReplacementAugmenter:
@@ -33,4 +57,4 @@ class SynonymReplacementAugmenter:
         self.p = p
 
     def augment(self, text: str, language: str) -> list[str]:
-        raise NotImplementedError("TODO: language-aware synonym swap")
+        raise NotImplementedError("Synonym replacement not supported for African languages.")
