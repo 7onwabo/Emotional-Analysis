@@ -52,6 +52,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--aux", required=True, choices=["afrisenti", "afrihate"], help="Auxiliary dataset")
     p.add_argument("--model", default="afro_xlmr_base", help="Base transformer model key")
     p.add_argument("--aux-epochs", type=int, default=3, help="Epochs for auxiliary fine-tune")
+    p.add_argument("--max-aux", type=int, default=5000, help="Max auxiliary examples per language (cap for memory/speed)")
     p.add_argument("--override", nargs="*", default=[])
     return p.parse_args()
 
@@ -109,7 +110,12 @@ def fine_tune_auxiliary(
         report_to=[],
         seed=cfg.seed,
         dataloader_pin_memory=False,
+        gradient_checkpointing=bool(getattr(t, "gradient_checkpointing", False)),
+        gradient_checkpointing_kwargs={"use_reentrant": False} if getattr(t, "gradient_checkpointing", False) else None,
+        use_cpu=True,  # aux phase on CPU to avoid MPS OOM alongside other allocations
     )
+    if bool(getattr(t, "gradient_checkpointing", False)):
+        model.config.use_cache = False
 
     trainer_kwargs: dict = dict(
         model=model,
@@ -150,9 +156,14 @@ def main() -> None:
     aux_dev: list[AuxExample] = []
     for lang in overlap:
         try:
-            aux_train += loader_fn(lang, split="train")
-            aux_dev += loader_fn(lang, split="dev" if aux_name == "afrisenti" else "validation")
-            print(f"[transfer] loaded {lang} aux train={len(aux_train)} dev={len(aux_dev)}")
+            lang_train = loader_fn(lang, split="train")
+            lang_dev = loader_fn(lang, split="dev" if aux_name == "afrisenti" else "validation")
+            if args.max_aux and len(lang_train) > args.max_aux:
+                import random; random.seed(42)
+                lang_train = random.sample(lang_train, args.max_aux)
+            aux_train += lang_train
+            aux_dev += lang_dev[:500]  # cap dev too
+            print(f"[transfer] loaded {lang} aux train={len(lang_train)} dev={len(lang_dev)}")
         except Exception as e:
             print(f"[transfer] warning: could not load {lang} from {aux_name}: {e}")
 

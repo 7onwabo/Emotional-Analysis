@@ -641,3 +641,153 @@ Loading weights: 100%|███████████████████�
 [eval]   tir: f1_macro=0.4866 f1_micro=0.5285 (n=1840)
 [eval]   orm: f1_macro=0.4625 f1_micro=0.5299 (n=1721)
 [eval] report -> reports/eval/afro_xlmr_base_all
+
+photsotetsi@192 Emotional-Analysis %  source /Users/mphotsotetsi/Documents/Honours/COS760/Emotional-Analysis/.venv/bin/
+activate
+((.venv) ) mphotsotetsi@192 Emotional-Analysis %   python scripts/evaluate.py --checkpoint outputs/tfidf_logreg_all --language all
+[eval] ckpt=outputs/tfidf_logreg_all languages=['afr', 'swa', 'hau', 'amh', 'tir', 'orm'] split=test threshold=0.5
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[eval] 12937 examples
+[eval] overall f1_macro=0.5034 f1_micro=0.5199
+[eval]   afr: f1_macro=0.2159 f1_micro=0.4563 (n=2130) zero-support=['surprise']
+[eval]   swa: f1_macro=0.1891 f1_micro=0.2873 (n=3312)
+[eval]   hau: f1_macro=0.5829 f1_micro=0.5829 (n=2160)
+[eval]   amh: f1_macro=0.5435 f1_micro=0.6138 (n=1774)
+[eval]   tir: f1_macro=0.4893 f1_micro=0.5623 (n=1840)
+[eval]   orm: f1_macro=0.5150 f1_micro=0.5949 (n=1721)
+[eval] report -> reports/eval/tfidf_logreg_all
+((.venv) ) mphotsotetsi@192 Emotional-Analysis %   python scripts/evaluate.py --checkpoint outputs/tfidf_svm_all --language all
+[eval] ckpt=outputs/tfidf_svm_all languages=['afr', 'swa', 'hau', 'amh', 'tir', 'orm'] split=test threshold=0.5
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[eval] 12937 examples
+[eval] overall f1_macro=0.5003 f1_micro=0.5196
+[eval]   afr: f1_macro=0.2343 f1_micro=0.4712 (n=2130) zero-support=['surprise']
+[eval]   swa: f1_macro=0.2128 f1_micro=0.2679 (n=3312)
+[eval]   hau: f1_macro=0.5837 f1_micro=0.5869 (n=2160)
+[eval]   amh: f1_macro=0.5319 f1_micro=0.6150 (n=1774)
+[eval]   tir: f1_macro=0.4860 f1_micro=0.5603 (n=1840)
+[eval]   orm: f1_macro=0.5156 f1_micro=0.6093 (n=1721)
+[eval] report -> reports/eval/tfidf_svm_all
+
+
+((.venv) ) mphotsotetsi@192 Emotional-Analysis % python scripts/train.py --model afriberta_large --language all \
+    --override train.batch_size=4 train.eval_batch_size=8 \
+               train.gradient_accumulation_steps=4 train.num_epochs=3 \
+               train.gradient_checkpointing=true train.freeze_base_layers=6
+[train] model=afriberta_large type=transformer languages=['afr', 'swa', 'hau', 'amh', 'tir', 'orm'] seed=42
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[train] train=17346 dev=3790
+Loading weights: 100%|█████████████████████████████████████████████████████████████| 165/165 [00:00<00:00, 10956.91it/s]
+[transformers] XLMRobertaForSequenceClassification LOAD REPORT from: castorini/afriberta_large
+Key                        | Status     | 
+---------------------------+------------+-
+lm_head.bias               | UNEXPECTED | 
+lm_head.layer_norm.weight  | UNEXPECTED | 
+lm_head.decoder.bias       | UNEXPECTED | 
+lm_head.dense.bias         | UNEXPECTED | 
+lm_head.layer_norm.bias    | UNEXPECTED | 
+lm_head.dense.weight       | UNEXPECTED | 
+lm_head.decoder.weight     | UNEXPECTED | 
+classifier.dense.bias      | MISSING    | 
+classifier.out_proj.bias   | MISSING    | 
+classifier.out_proj.weight | MISSING    | 
+classifier.dense.weight    | MISSING    | 
+
+Notes:
+- UNEXPECTED:   can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Map: 100%|███████████████████████████████████████████████████████████████| 17346/17346 [00:01<00:00, 9934.97 examples/s]
+Map: 100%|████████████████████████████████████████████████████████████████| 3790/3790 [00:00<00:00, 14729.59 examples/s]
+[train] pos_weight=[4.52, 3.67, 18.04, 4.18, 5.13, 10.41]
+[transformers] warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.
+{'loss': '4.782', 'grad_norm': '11.85', 'learning_rate': '3.006e-06', 'epoch': '0.04611'}                               
+{'loss': '4.718', 'grad_norm': '9.536', 'learning_rate': '6.074e-06', 'epoch': '0.09223'}                               
+{'loss': '4.601', 'grad_norm': '13.94', 'learning_rate': '9.141e-06', 'epoch': '0.1383'}                                
+{'loss': '4.379', 'grad_norm': '12.8', 'learning_rate': '1.221e-05', 'epoch': '0.1845'}                                 
+{'loss': '4.227', 'grad_norm': '8.603', 'learning_rate': '1.528e-05', 'epoch': '0.2306'}                                
+{'loss': '4.143', 'grad_norm': '9.546', 'learning_rate': '1.834e-05', 'epoch': '0.2767'}                                
+{'loss': '4.069', 'grad_norm': '10.25', 'learning_rate': '1.984e-05', 'epoch': '0.3228'}                                
+{'loss': '3.744', 'grad_norm': '26.4', 'learning_rate': '1.95e-05', 'epoch': '0.3689'}                                  
+{'loss': '3.843', 'grad_norm': '11.94', 'learning_rate': '1.916e-05', 'epoch': '0.415'}                                 
+{'loss': '3.83', 'grad_norm': '8.573', 'learning_rate': '1.882e-05', 'epoch': '0.4611'}                                 
+{'loss': '3.558', 'grad_norm': '15.39', 'learning_rate': '1.848e-05', 'epoch': '0.5073'}                                
+{'loss': '3.561', 'grad_norm': '8.809', 'learning_rate': '1.814e-05', 'epoch': '0.5534'}                                
+{'loss': '3.677', 'grad_norm': '18.34', 'learning_rate': '1.779e-05', 'epoch': '0.5995'}                                
+{'loss': '3.711', 'grad_norm': '17.27', 'learning_rate': '1.745e-05', 'epoch': '0.6456'}                                
+{'loss': '3.565', 'grad_norm': '12.84', 'learning_rate': '1.711e-05', 'epoch': '0.6917'}                                
+{'loss': '3.445', 'grad_norm': '22.99', 'learning_rate': '1.677e-05', 'epoch': '0.7378'}                                
+{'loss': '3.385', 'grad_norm': '16.91', 'learning_rate': '1.643e-05', 'epoch': '0.784'}                                 
+{'loss': '3.544', 'grad_norm': '13.18', 'learning_rate': '1.609e-05', 'epoch': '0.8301'}                                
+{'loss': '3.279', 'grad_norm': '28.09', 'learning_rate': '1.575e-05', 'epoch': '0.8762'}                                
+{'loss': '3.54', 'grad_norm': '25.99', 'learning_rate': '1.54e-05', 'epoch': '0.9223'}                                  
+{'loss': '3.278', 'grad_norm': '13.77', 'learning_rate': '1.506e-05', 'epoch': '0.9684'}                                
+{'eval_loss': '0.8471', 'eval_f1_macro': '0.4796', 'eval_f1_micro': '0.4889', 'eval_f1_weighted': '0.5127', 'eval_precision_macro': '0.3797', 'eval_recall_macro': '0.7271', 'eval_hamming_loss': '0.2185', 'eval_f1_anger': '0.5243', 'eval_f1_disgust': '0.6108', 'eval_f1_fear': '0.2817', 'eval_f1_joy': '0.5456', 'eval_f1_sadness': '0.5049', 'eval_f1_surprise': '0.4099', 'eval_runtime': '118', 'eval_samples_per_second': '32.12', 'eval_steps_per_second': '4.017', 'epoch': '1'}
+Writing model shards: 100%|███████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.88s/it]
+{'loss': '3.202', 'grad_norm': '12.02', 'learning_rate': '1.472e-05', 'epoch': '1.014'}                                 
+{'loss': '3.137', 'grad_norm': '8.989', 'learning_rate': '1.438e-05', 'epoch': '1.06'}                                  
+{'loss': '3.041', 'grad_norm': '31.67', 'learning_rate': '1.404e-05', 'epoch': '1.106'}                                 
+{'loss': '3.111', 'grad_norm': '11.6', 'learning_rate': '1.37e-05', 'epoch': '1.152'}                                   
+{'loss': '3.038', 'grad_norm': '10.18', 'learning_rate': '1.336e-05', 'epoch': '1.198'}                                 
+{'loss': '3.216', 'grad_norm': '30.94', 'learning_rate': '1.301e-05', 'epoch': '1.244'}                                 
+{'loss': '2.91', 'grad_norm': '17.62', 'learning_rate': '1.267e-05', 'epoch': '1.291'}                                  
+{'loss': '3.14', 'grad_norm': '15.7', 'learning_rate': '1.233e-05', 'epoch': '1.337'}                                   
+{'loss': '3.059', 'grad_norm': '16.03', 'learning_rate': '1.199e-05', 'epoch': '1.383'}                                 
+{'loss': '3.125', 'grad_norm': '26.93', 'learning_rate': '1.165e-05', 'epoch': '1.429'}                                 
+{'loss': '3.104', 'grad_norm': '35.19', 'learning_rate': '1.131e-05', 'epoch': '1.475'}                                 
+{'loss': '3.022', 'grad_norm': '7.846', 'learning_rate': '1.097e-05', 'epoch': '1.521'}                                 
+{'loss': '3.149', 'grad_norm': '28.49', 'learning_rate': '1.062e-05', 'epoch': '1.567'}                                 
+{'loss': '3.083', 'grad_norm': '11.08', 'learning_rate': '1.028e-05', 'epoch': '1.613'}                                 
+{'loss': '3.066', 'grad_norm': '17.82', 'learning_rate': '9.942e-06', 'epoch': '1.659'}                                 
+{'loss': '3.15', 'grad_norm': '13.44', 'learning_rate': '9.601e-06', 'epoch': '1.706'}                                  
+{'loss': '3.123', 'grad_norm': '14.07', 'learning_rate': '9.259e-06', 'epoch': '1.752'}                                 
+{'loss': '3.279', 'grad_norm': '15.06', 'learning_rate': '8.918e-06', 'epoch': '1.798'}                                 
+{'loss': '3.133', 'grad_norm': '20.31', 'learning_rate': '8.576e-06', 'epoch': '1.844'}                                 
+{'loss': '2.983', 'grad_norm': '18.9', 'learning_rate': '8.235e-06', 'epoch': '1.89'}                                   
+{'loss': '3.207', 'grad_norm': '45.63', 'learning_rate': '7.893e-06', 'epoch': '1.936'}                                 
+{'loss': '3.103', 'grad_norm': '12.04', 'learning_rate': '7.552e-06', 'epoch': '1.982'}                                 
+{'eval_loss': '0.8026', 'eval_f1_macro': '0.5159', 'eval_f1_micro': '0.5316', 'eval_f1_weighted': '0.5419', 'eval_precision_macro': '0.4059', 'eval_recall_macro': '0.7376', 'eval_hamming_loss': '0.1896', 'eval_f1_anger': '0.5052', 'eval_f1_disgust': '0.6136', 'eval_f1_fear': '0.3493', 'eval_f1_joy': '0.5888', 'eval_f1_sadness': '0.5577', 'eval_f1_surprise': '0.4808', 'eval_runtime': '38.65', 'eval_samples_per_second': '98.07', 'eval_steps_per_second': '12.27', 'epoch': '2'}
+Writing model shards: 100%|███████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  1.13it/s]
+{'loss': '2.903', 'grad_norm': '16.3', 'learning_rate': '7.211e-06', 'epoch': '2.028'}                                  
+{'loss': '2.795', 'grad_norm': '27.94', 'learning_rate': '6.869e-06', 'epoch': '2.074'}                                 
+{'loss': '2.836', 'grad_norm': '36.31', 'learning_rate': '6.528e-06', 'epoch': '2.12'}                                  
+{'loss': '2.792', 'grad_norm': '14.77', 'learning_rate': '6.186e-06', 'epoch': '2.166'}                                 
+{'loss': '2.676', 'grad_norm': '20.43', 'learning_rate': '5.845e-06', 'epoch': '2.212'}                                 
+{'loss': '2.779', 'grad_norm': '24.06', 'learning_rate': '5.504e-06', 'epoch': '2.258'}                                 
+{'loss': '2.666', 'grad_norm': '13.57', 'learning_rate': '5.162e-06', 'epoch': '2.304'}                                 
+{'loss': '2.841', 'grad_norm': '17.88', 'learning_rate': '4.821e-06', 'epoch': '2.35'}                                  
+{'loss': '3.035', 'grad_norm': '13.86', 'learning_rate': '4.479e-06', 'epoch': '2.397'}                                 
+{'loss': '2.833', 'grad_norm': '15.52', 'learning_rate': '4.138e-06', 'epoch': '2.443'}                                 
+{'loss': '2.809', 'grad_norm': '16.67', 'learning_rate': '3.797e-06', 'epoch': '2.489'}                                 
+{'loss': '2.785', 'grad_norm': '13.31', 'learning_rate': '3.455e-06', 'epoch': '2.535'}                                 
+{'loss': '2.754', 'grad_norm': '14.67', 'learning_rate': '3.114e-06', 'epoch': '2.581'}                                 
+{'loss': '2.91', 'grad_norm': '14.12', 'learning_rate': '2.772e-06', 'epoch': '2.627'}                                  
+{'loss': '2.78', 'grad_norm': '38.33', 'learning_rate': '2.431e-06', 'epoch': '2.673'}                                  
+{'loss': '2.836', 'grad_norm': '20.74', 'learning_rate': '2.089e-06', 'epoch': '2.719'}                                 
+{'loss': '2.722', 'grad_norm': '19.96', 'learning_rate': '1.748e-06', 'epoch': '2.766'}                                 
+{'loss': '2.768', 'grad_norm': '24.85', 'learning_rate': '1.407e-06', 'epoch': '2.812'}                                 
+{'loss': '2.806', 'grad_norm': '28.28', 'learning_rate': '1.065e-06', 'epoch': '2.858'}                                 
+{'loss': '2.801', 'grad_norm': '32', 'learning_rate': '7.238e-07', 'epoch': '2.904'}                                    
+{'loss': '2.817', 'grad_norm': '29.43', 'learning_rate': '3.824e-07', 'epoch': '2.95'}                                  
+{'loss': '2.769', 'grad_norm': '18.58', 'learning_rate': '4.097e-08', 'epoch': '2.996'}                                 
+{'eval_loss': '0.811', 'eval_f1_macro': '0.5201', 'eval_f1_micro': '0.5367', 'eval_f1_weighted': '0.5456', 'eval_precision_macro': '0.4104', 'eval_recall_macro': '0.7323', 'eval_hamming_loss': '0.1856', 'eval_f1_anger': '0.514', 'eval_f1_disgust': '0.6333', 'eval_f1_fear': '0.359', 'eval_f1_joy': '0.5843', 'eval_f1_sadness': '0.5449', 'eval_f1_surprise': '0.4848', 'eval_runtime': '41.77', 'eval_samples_per_second': '90.74', 'eval_steps_per_second': '11.35', 'epoch': '3'}
+Writing model shards: 100%|███████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.12s/it]
+{'train_runtime': '3730', 'train_samples_per_second': '13.95', 'train_steps_per_second': '0.873', 'train_loss': '3.244', 'epoch': '3'}
+100%|█████████████████████████████████████████████████████████████████████████████| 3255/3255 [1:02:11<00:00,  1.15s/it]
+100%|█████████████████████████████████████████████████████████████████████████████████| 474/474 [00:40<00:00, 11.80it/s]
+Writing model shards: 100%|███████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.16s/it]
+[train] dev f1_macro=0.5201
+[train] artifacts -> outputs/afriberta_large_all
+
+(.venv) ) mphotsotetsi@192 Emotional-Analysis %   python scripts/evaluate.py --checkpoint outputs/afriberta_large_all --language all
+[eval] ckpt=outputs/afriberta_large_all languages=['afr', 'swa', 'hau', 'amh', 'tir', 'orm'] split=test threshold=0.5
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[eval] 12937 examples
+Loading weights: 100%|██████████████████████████████████████████████████████████████| 169/169 [00:00<00:00, 4741.77it/s]
+[eval] overall f1_macro=0.5017 f1_micro=0.5143
+[eval]   afr: f1_macro=0.1806 f1_micro=0.3947 (n=2130) zero-support=['surprise']
+[eval]   swa: f1_macro=0.2615 f1_micro=0.3263 (n=3312)
+[eval]   hau: f1_macro=0.6211 f1_micro=0.6196 (n=2160)
+[eval]   amh: f1_macro=0.6008 f1_micro=0.6495 (n=1774)
+[eval]   tir: f1_macro=0.4795 f1_micro=0.5259 (n=1840)
+[eval]   orm: f1_macro=0.5341 f1_micro=0.5973 (n=1721)
+[eval] report -> reports/eval/afriberta_large_all

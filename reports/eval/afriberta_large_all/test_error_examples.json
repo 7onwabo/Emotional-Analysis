@@ -1,14 +1,27 @@
 [
   {
-    "text": "as die nasionale regering wat die wette maak, nie die gemors kan uitsorteer nie, gaan die wes-kaapse regering ingryp.",
+    "text": "ci da buguzum: an kama su yayin da suke tsaka da yiwa jama\u2019a fashi da bindigar bogi",
+    "gold": [],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "munisipaliteite moet die voorsiening van behuising, water, sanitasie, elektrisiteit, afvalbestuur en paaie verbeter.",
     "gold": [
       "anger",
-      "disgust"
+      "disgust",
+      "sadness"
     ],
     "pred": [
       "fear",
-      "joy",
-      "sadness"
+      "joy"
     ],
     "n_wrong": 5,
     "language": "afr"
@@ -28,147 +41,21 @@
     "language": "afr"
   },
   {
-    "text": "\u12a5\u1290\u129d\u1205 \u1230\u12ce\u127d \u12a0\u1295\u12f3\u1295\u12f4 \u1208\u1355\u122e\u130d\u122b\u121b\u1278\u12cd \u12e8\u121a\u1230\u1321\u1275 \u12a0\u122d\u12a5\u1235\u1275 \u1260\u1323\u121d \u12eb\u1235\u1240\u129b\u120d? \u12a8\u12a6\u122e\u121e\u12a6\u1290\u130d \u1260\u1235\u1270\u1240\u122d \u12a6\u1205\u12f4\u12f5\u1295 \u12e8\u121a\u12eb\u1235\u1348\u122b \u12a0\u1295\u12f3\u127d \u1290\u1308\u122d \u12e8\u1208\u121d",
+    "text": "huyo dame ameshuka mat alafu akakimbilia chali yake na akamrukia,,3min later bado they are still hugging,,,ni vile tuu apakuwa na mawe karibu \ud83d\ude22\ud83d\ude22\ud83d\ude12\ud83d\ude12",
     "gold": [
-      "fear",
+      "disgust",
       "joy"
     ],
     "pred": [
-      "anger",
+      "fear",
       "sadness",
       "surprise"
     ],
     "n_wrong": 5,
-    "language": "amh"
+    "language": "swa"
   },
   {
-    "text": "al wat hulle moet doen is om te erken dat hulle fouteer het.",
-    "gold": [
-      "anger",
-      "disgust"
-    ],
-    "pred": [
-      "fear",
-      "joy",
-      "sadness"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "daar is baie mense wat namens u as plaaswerkers wil praat en wil voorgee dat hulle u omstandighede wil verander.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "munisipaliteite moet die voorsiening van behuising, water, sanitasie, elektrisiteit, afvalbestuur en paaie verbeter.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "moet hom nie die heel tyd soos 'n tweedeklasburger behandel nie.",
-    "gold": [
-      "anger",
-      "disgust"
-    ],
-    "pred": [
-      "fear",
-      "joy",
-      "sadness"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "daar is te veel moorde, verkragtings, kinder-molesterings, rooftogte, vroue-mishandeling en bendes in ons gemeenskappe.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "munisipaliteite moet die voorsiening van behuising, water, sanitasie, elektrisiteit, afvalbestuur en paaie verbeter.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "hy sit nou sonder werk maar ons gaan voort met 'n kriminele saak van bedrog teen hom.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "misdaad op plase bly 'n ernstige probleem.",
-    "gold": [
-      "anger",
-      "disgust",
-      "fear",
-      "sadness"
-    ],
-    "pred": [
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "onlangs het ons byvoorbeeld die ongelukkige voorval by bultfontein gehad waar na bewering polisiereserviste by so 'n plaasaanval betrokke was.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "een aspek wat ek graag wil beklemtoon, is dat rassisme in suid-afrika met wortel en tak uitgeroei moet word.",
+    "text": "hiervan bly kindermishandeling waarskynlik een van die mees skokkendste.",
     "gold": [
       "anger",
       "disgust",
@@ -196,7 +83,7 @@
     "language": "afr"
   },
   {
-    "text": "dit is juis onverantwoordelike optrede wat veroorsaak dat ons elke jaar duisende nuwe grafte moet grawe.",
+    "text": "daar is geen regverdiging vir sodanige dade van moedswillige vernietiging en wreedheid nie.",
     "gold": [
       "anger",
       "disgust",
@@ -205,48 +92,6 @@
     "pred": [
       "fear",
       "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "al wat hulle moet doen is om te erken dat hulle fouteer het.",
-    "gold": [
-      "anger",
-      "disgust"
-    ],
-    "pred": [
-      "fear",
-      "joy",
-      "sadness"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "die groepsgebiedewet het ons voorouers gedwing om na kaapstad te trek.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "dis sulke mense wat die naam van korrektiewe dienste beswader.",
-    "gold": [
-      "anger",
-      "disgust"
-    ],
-    "pred": [
-      "fear",
-      "joy",
-      "sadness"
     ],
     "n_wrong": 5,
     "language": "afr"
@@ -266,32 +111,59 @@
     "language": "afr"
   },
   {
-    "text": "daar is geen regverdiging vir sodanige dade van moedswillige vernietiging en wreedheid nie.",
+    "text": "al wat hulle moet doen is om te erken dat hulle fouteer het.",
     "gold": [
       "anger",
-      "disgust",
-      "sadness"
+      "disgust"
     ],
     "pred": [
       "fear",
-      "joy"
+      "joy",
+      "sadness"
     ],
     "n_wrong": 5,
     "language": "afr"
   },
   {
-    "text": "maar dit is \u2019n feit dat agt miljoen mense nog steeds sonder drinkbare water is.",
+    "text": "jana macuzo wangu walichapa bong ingine ikone some fire strain ya weed, bado wamezima mpaka saa hiii \ud83e\udd23\ud83e\udd23\ud83e\udd23\u26b0\ufe0f",
     "gold": [
-      "anger",
-      "disgust",
-      "sadness"
+      "disgust"
     ],
     "pred": [
       "fear",
-      "joy"
+      "joy",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "swa"
+  },
+  {
+    "text": "al wat hulle moet doen is om te erken dat hulle fouteer het.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
     ],
     "n_wrong": 5,
     "language": "afr"
+  },
+  {
+    "text": "ci da buguzum: an kama su yayin da suke tsaka da yiwa jama\u2019a fashi da bindigar bogi",
+    "gold": [],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
   },
   {
     "text": "een aspek wat ek graag wil beklemtoon, is dat rassisme in suid-afrika met wortel en tak uitgeroei moet word.",
@@ -308,49 +180,35 @@
     "language": "afr"
   },
   {
-    "text": "hiervan bly kindermishandeling waarskynlik een van die mees skokkendste.",
+    "text": "\u1270\u12a0\u121d\u1228\u129b\u12cd \u1218\u122a\u12eb\u127d\u1295 \u12d0\u1265\u1279\u12ec \u1235\u122b\u1205 \u1201\u1209 \u12e8\u121a\u1308\u122d\u121d \u1290\u12cd \u12ad\u122d\u1235\u1276\u1235 \u1260\u1218\u1235\u1240\u120d \u120b\u12ed \u1206\u1296 \u12a0\u1230\u1243\u12ed\u1270\u12cd \u1208\u1308\u12f0\u1209\u1275 \u12c8\u1308\u1296\u1279 \u12e8\u1230\u1320\u12cd\u1295 \u121d\u1205\u1228\u1275 \u12a5\u1293 \u12ed\u1245\u122d\u1273 \u12a5",
     "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
       "joy"
     ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "daar is geen regverdiging vir sodanige dade van moedswillige vernietiging en wreedheid nie.",
-    "gold": [
+    "pred": [
       "anger",
       "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "abun dai babu dadin ji walahi \ud83e\udd26\u200d\u2642\ufe0f. casu fa \ud83d\ude2d",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "joy",
+      "sadness",
       "surprise"
     ],
     "n_wrong": 5,
-    "language": "hau"
+    "language": "amh"
   },
   {
-    "text": "daar is baie mense wat namens u as plaaswerkers wil praat en wil voorgee dat hulle u omstandighede wil verander.",
+    "text": "manne wat nie onderhoud betaal vir hul eie kinders nie.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "daar is te veel moorde, verkragtings, kinder-molesterings, rooftogte, vroue-mishandeling en bendes in ons gemeenskappe.",
     "gold": [
       "anger",
       "disgust",
@@ -364,7 +222,7 @@
     "language": "afr"
   },
   {
-    "text": "dit is juis onverantwoordelike optrede wat veroorsaak dat ons elke jaar duisende nuwe grafte moet grawe.",
+    "text": "die groepsgebiedewet het ons voorouers gedwing om na kaapstad te trek.",
     "gold": [
       "anger",
       "disgust",
@@ -378,18 +236,18 @@
     "language": "afr"
   },
   {
-    "text": "dat die familie-hande wat die kind moet oppas, ingespan word om geweldsmisdade te pleeg.",
+    "text": "huyo dame ameshuka mat alafu akakimbilia chali yake na akamrukia,,3min later bado they are still hugging,,,ni vile tuu apakuwa na mawe karibu \ud83d\ude22\ud83d\ude22\ud83d\ude12\ud83d\ude12",
     "gold": [
-      "anger",
       "disgust",
-      "sadness"
+      "joy"
     ],
     "pred": [
       "fear",
-      "joy"
+      "sadness",
+      "surprise"
     ],
     "n_wrong": 5,
-    "language": "afr"
+    "language": "swa"
   },
   {
     "text": "die feit is dat baie van daardie mense self nog nooit 'n dag se werk op 'n plaas gedoen het nie.",
@@ -406,35 +264,7 @@
     "language": "afr"
   },
   {
-    "text": "dis sulke mense wat die naam van korrektiewe dienste beswader.",
-    "gold": [
-      "anger",
-      "disgust"
-    ],
-    "pred": [
-      "fear",
-      "joy",
-      "sadness"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "die feit is dat baie van daardie mense self nog nooit 'n dag se werk op 'n plaas gedoen het nie.",
-    "gold": [
-      "anger",
-      "disgust"
-    ],
-    "pred": [
-      "fear",
-      "joy",
-      "sadness"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "hiervan bly kindermishandeling waarskynlik een van die mees skokkendste.",
+    "text": "onlangs het ons byvoorbeeld die ongelukkige voorval by bultfontein gehad waar na bewering polisiereserviste by so 'n plaasaanval betrokke was.",
     "gold": [
       "anger",
       "disgust",
@@ -442,34 +272,6 @@
     ],
     "pred": [
       "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "hy sit nou sonder werk maar ons gaan voort met 'n kriminele saak van bedrog teen hom.",
-    "gold": [
-      "anger",
-      "disgust",
-      "sadness"
-    ],
-    "pred": [
-      "fear",
-      "joy"
-    ],
-    "n_wrong": 5,
-    "language": "afr"
-  },
-  {
-    "text": "misdaad op plase bly 'n ernstige probleem.",
-    "gold": [
-      "anger",
-      "disgust",
-      "fear",
-      "sadness"
-    ],
-    "pred": [
       "joy"
     ],
     "n_wrong": 5,
@@ -504,6 +306,48 @@
     "language": "afr"
   },
   {
+    "text": "abun dai babu dadin ji walahi \ud83e\udd26\u200d\u2642\ufe0f. casu fa \ud83d\ude2d",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "joy",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "daar is baie mense wat namens u as plaaswerkers wil praat en wil voorgee dat hulle u omstandighede wil verander.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "hulle het van ons, in ons gemeenskappe seergemaak.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
     "text": "moet hom nie die heel tyd soos 'n tweedeklasburger behandel nie.",
     "gold": [
       "anger",
@@ -518,7 +362,21 @@
     "language": "afr"
   },
   {
-    "text": "en dit gebeur beslis met ander goed, die w\u00eareldbekertoernooi wat hier was is misbruik as 'n beeldbou situasie vir slegs een party.",
+    "text": "moet hom nie die heel tyd soos 'n tweedeklasburger behandel nie.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "dat die familie-hande wat die kind moet oppas, ingespan word om geweldsmisdade te pleeg.",
     "gold": [
       "anger",
       "disgust",
@@ -527,6 +385,20 @@
     "pred": [
       "fear",
       "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "die feit is dat baie van daardie mense self nog nooit 'n dag se werk op 'n plaas gedoen het nie.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
     ],
     "n_wrong": 5,
     "language": "afr"
@@ -560,35 +432,35 @@
     "language": "afr"
   },
   {
-    "text": "\u12a3\u1300\u12ab \u1205\u12dd\u1260\u12ed \u12a3\u1265 \u12cd\u130d\u12a5 \u12de\u120e \u12a5\u12e9 \u1275\u12a8\u1235\u1265 \u1275\u12a8\u1235\u122d \u12d3\u12c8\u1275 \u1293\u1275\u1293\u12e9 \u12a3\u12ed\u1275\u12f3\u1293\u1309\u1341",
+    "text": "\u12a5\u1276\u121d \u12a3\u1265 \u12b8\u1270\u121b\u1273\u1275 \u12a3\u12cd\u122e\u1333 \u1295\u1255\u1295\u1323\u122e \u1338\u120b\u12a5\u1275\u1293 \u122b\u12d5\u12f2 \u12e8\u12a5\u1275\u12ee\u121d\u120e\u121d \u12dd\u1250\u1290\u12e9 \u1309\u1305\u1208 \u12cb\u120d\u1273 \u1235\u122d\u1216\u121d \u1265\u12d3\u12c8\u1275 \u12db\u12da\u121e\u121d \u1295\u12d3\u12f6\u121d \u12ed\u121d\u1208\u1231 \u12a3\u1208\u12cd\u1362 \u12a5\u1235\u12aa \u1265\u1230\u120b\u121d \u12a5\u1270\u12cd \u1260\u1209\u1208\u12ed\u1362 \u12d3\u12c8\u1275 \u1295\u1213\u134b\u123d\u1362",
     "gold": [
-      "sadness"
+      "fear",
+      "joy"
     ],
     "pred": [
       "anger",
       "disgust",
-      "fear",
-      "joy"
+      "sadness"
     ],
     "n_wrong": 5,
     "language": "tir"
   },
   {
-    "text": "gaskiya wan nan alamari ya kazanta domin babu shi a hadisi kuma babu a qur'an \ud83d\ude23\ud83d\ude1e",
+    "text": "abun dai babu dadin ji walahi \ud83e\udd26\u200d\u2642\ufe0f. casu fa \ud83d\ude2d",
     "gold": [
-      "disgust"
+      "anger",
+      "disgust",
+      "sadness"
     ],
     "pred": [
-      "anger",
-      "fear",
-      "sadness",
+      "joy",
       "surprise"
     ],
     "n_wrong": 5,
     "language": "hau"
   },
   {
-    "text": "dat die familie-hande wat die kind moet oppas, ingespan word om geweldsmisdade te pleeg.",
+    "text": "en dit gebeur beslis met ander goed, die w\u00eareldbekertoernooi wat hier was is misbruik as 'n beeldbou situasie vir slegs een party.",
     "gold": [
       "anger",
       "disgust",
@@ -616,6 +488,104 @@
     "language": "afr"
   },
   {
+    "text": "hulle het van ons, in ons gemeenskappe seergemaak.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "jana macuzo wangu walichapa bong ingine ikone some fire strain ya weed, bado wamezima mpaka saa hiii \ud83e\udd23\ud83e\udd23\ud83e\udd23\u26b0\ufe0f",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "swa"
+  },
+  {
+    "text": "daar is baie mense wat namens u as plaaswerkers wil praat en wil voorgee dat hulle u omstandighede wil verander.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "daar is geen regverdiging vir sodanige dade van moedswillige vernietiging en wreedheid nie.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "\u12a3\u1300\u12ab \u1205\u12dd\u1260\u12ed \u12a3\u1265 \u12cd\u130d\u12a5 \u12de\u120e \u12a5\u12e9 \u1275\u12a8\u1235\u1265 \u1275\u12a8\u1235\u122d \u12d3\u12c8\u1275 \u1293\u1275\u1293\u12e9 \u12a3\u12ed\u1275\u12f3\u1293\u1309\u1341",
+    "gold": [
+      "sadness"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "tir"
+  },
+  {
+    "text": "Qaliwwwaaan keeenyaaa waaaqayyyooo isinaaa eguuu maaaleee biyyyati bulguuu sanaaa keeesssaaa tesssaaani akkkas hasssauuun keeesssaaan kun heddduuu naaa yadeeesssaaa",
+    "gold": [
+      "fear"
+    ],
+    "pred": [
+      "anger",
+      "joy",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "orm"
+  },
+  {
+    "text": "misdaad op plase bly 'n ernstige probleem.",
+    "gold": [
+      "anger",
+      "disgust",
+      "fear",
+      "sadness"
+    ],
+    "pred": [
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
     "text": "en dit gebeur beslis met ander goed, die w\u00eareldbekertoernooi wat hier was is misbruik as 'n beeldbou situasie vir slegs een party.",
     "gold": [
       "anger",
@@ -630,7 +600,21 @@
     "language": "afr"
   },
   {
-    "text": "maar dit is \u2019n feit dat agt miljoen mense nog steeds sonder drinkbare water is.",
+    "text": "misdaad op plase bly 'n ernstige probleem.",
+    "gold": [
+      "anger",
+      "disgust",
+      "fear",
+      "sadness"
+    ],
+    "pred": [
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "hy sit nou sonder werk maar ons gaan voort met 'n kriminele saak van bedrog teen hom.",
     "gold": [
       "anger",
       "disgust",
@@ -644,49 +628,49 @@
     "language": "afr"
   },
   {
-    "text": "gaskiya wan nan alamari ya kazanta domin babu shi a hadisi kuma babu a qur'an \ud83d\ude23\ud83d\ude1e",
+    "text": "munisipaliteite moet die voorsiening van behuising, water, sanitasie, elektrisiteit, afvalbestuur en paaie verbeter.",
     "gold": [
-      "disgust"
+      "anger",
+      "disgust",
+      "sadness"
     ],
     "pred": [
-      "anger",
       "fear",
-      "sadness",
-      "surprise"
+      "joy"
     ],
     "n_wrong": 5,
-    "language": "hau"
+    "language": "afr"
   },
   {
-    "text": "\u1270\u12a0\u121d\u1228\u129b\u12cd \u1218\u122a\u12eb\u127d\u1295 \u12d0\u1265\u1279\u12ec \u1235\u122b\u1205 \u1201\u1209 \u12e8\u121a\u1308\u122d\u121d \u1290\u12cd \u12ad\u122d\u1235\u1276\u1235 \u1260\u1218\u1235\u1240\u120d \u120b\u12ed \u1206\u1296 \u12a0\u1230\u1243\u12ed\u1270\u12cd \u1208\u1308\u12f0\u1209\u1275 \u12c8\u1308\u1296\u1279 \u12e8\u1230\u1320\u12cd\u1295 \u121d\u1205\u1228\u1275 \u12a5\u1293 \u12ed\u1245\u122d\u1273 \u12a5",
+    "text": "ek kan die diep gekerfde lyne van pyn en stryd, armoede en honger op die gesigte van u plaasaarbieders sien.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "\u1210\u12da \u12f6 \u1270\u1228\u12f2\u12a1\u12ab \u12a3\u1290\u121d \u1242\u122d \u12a2\u1209\u1292 \u12a5\u12e9 \u1290\u12ed\u1229",
     "gold": [
       "joy"
     ],
     "pred": [
       "anger",
       "disgust",
-      "sadness",
-      "surprise"
-    ],
-    "n_wrong": 5,
-    "language": "amh"
-  },
-  {
-    "text": "abun dai babu dadin ji walahi \ud83e\udd26\u200d\u2642\ufe0f. casu fa \ud83d\ude2d",
-    "gold": [
-      "anger",
-      "disgust",
+      "fear",
       "sadness"
     ],
-    "pred": [
-      "joy",
-      "surprise"
-    ],
     "n_wrong": 5,
-    "language": "hau"
+    "language": "tir"
   },
   {
-    "text": "manne wat nie onderhoud betaal vir hul eie kinders nie.",
+    "text": "as die nasionale regering wat die wette maak, nie die gemors kan uitsorteer nie, gaan die wes-kaapse regering ingryp.",
     "gold": [
       "anger",
       "disgust"
@@ -695,6 +679,20 @@
       "fear",
       "joy",
       "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "hy sit nou sonder werk maar ons gaan voort met 'n kriminele saak van bedrog teen hom.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
     ],
     "n_wrong": 5,
     "language": "afr"
