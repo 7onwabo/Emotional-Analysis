@@ -51,6 +51,15 @@ target_languages:
     splits: { train: 3681, dev: 614, test: 1840 }
     notes: Second Ge'ez-script language; lower-resource, morphologically rich. Expected performance gap is a finding for RQ2, not a failure.
 
+  - code: orm
+    name: Oromo
+    family: Afro-Asiatic (Cushitic)
+    region: Ethiopia / Kenya
+    source: ethioemo
+    script: Latin
+    splits: { train: 3682, dev: 614, test: 1841 }
+    notes: Latin-script EthioEmo language. Adds a third Afro-Asiatic language with Latin script for cross-family comparison.
+
 # Optional sources for ablations or back-translation pivots only.
 # Not reported in the final per-language results.
 auxiliary_languages:

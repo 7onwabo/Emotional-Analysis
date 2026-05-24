@@ -20,6 +20,17 @@ models:
       max_features: 50000
       C: 1.0
 
+  # --- Deep learning baseline ---
+  bilstm_fasttext:
+    type: bilstm
+    vocab_size: 200000
+    embed_dim: 300
+    hidden_dim: 256
+    num_layers: 2
+    dropout: 0.3
+    max_length: 128
+    notes: BiLSTM with character n-gram (FastText-style) embeddings, trained from scratch
+
   # --- Transformer fine-tunes ---
   afro_xlmr_base:
     type: transformer

@@ -46,6 +46,30 @@ def predict_baseline(ckpt: Path, texts: list[str]) -> np.ndarray:
     return np.asarray(pipeline.predict(texts)).astype(int)
 
 
+def predict_bilstm(ckpt: Path, texts: list[str], threshold: float) -> np.ndarray:
+    import json
+
+    import torch
+
+    from emotion_analysis.models.bilstm import BiLSTMClassifier, BiLSTMConfig, FastTextTokenizer
+
+    cfg = json.loads((ckpt / "bilstm_config.json").read_text())
+    model = BiLSTMClassifier(BiLSTMConfig(**cfg))
+    model.load_state_dict(torch.load(ckpt / "model.pt", map_location="cpu", weights_only=True))
+    model.eval()
+    tokenizer = FastTextTokenizer.from_pretrained(str(ckpt))
+
+    preds = []
+    batch = 64
+    with torch.no_grad():
+        for i in range(0, len(texts), batch):
+            enc = tokenizer(texts[i : i + batch])
+            out = model(enc["input_ids"], lengths=enc["lengths"])
+            probs = torch.sigmoid(out["logits"]).numpy()
+            preds.append((probs >= threshold).astype(int))
+    return np.vstack(preds)
+
+
 def predict_transformer(
     ckpt: Path, texts: list[str], max_length: int, threshold: float
 ) -> np.ndarray:
@@ -88,8 +112,11 @@ def main() -> None:
     print(f"[eval] {len(texts)} examples")
 
     is_baseline = (ckpt / "pipeline.joblib").exists()
+    is_bilstm = (ckpt / "model.pt").exists()
     if is_baseline:
         preds = predict_baseline(ckpt, texts)
+    elif is_bilstm:
+        preds = predict_bilstm(ckpt, texts, threshold=threshold)
     else:
         preds = predict_transformer(ckpt, texts, max_length=128, threshold=threshold)
 

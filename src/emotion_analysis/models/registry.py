@@ -39,4 +39,19 @@ def build_model(model_key: str, num_labels: int, config_path: str | Path = "conf
                 max_length=spec.max_length,
             )
         )
+    if spec.type == "bilstm":
+        from emotion_analysis.models.bilstm import BiLSTMClassifier, BiLSTMConfig, FastTextTokenizer
+
+        config = BiLSTMConfig(
+            num_labels=num_labels,
+            vocab_size=getattr(spec, "vocab_size", 200_000),
+            embed_dim=getattr(spec, "embed_dim", 300),
+            hidden_dim=getattr(spec, "hidden_dim", 256),
+            num_layers=getattr(spec, "num_layers", 2),
+            dropout=getattr(spec, "dropout", 0.3),
+            max_length=getattr(spec, "max_length", 128),
+        )
+        return BiLSTMClassifier(config), FastTextTokenizer(
+            vocab_size=config.vocab_size, max_length=config.max_length
+        )
     raise ValueError(f"Unknown model type: {spec.type}")

@@ -91,6 +91,98 @@ def main() -> None:
             label_names=label_names,
             pos_weight=pos_weight,
         )
+    elif spec.type == "bilstm":
+        import numpy as np
+        import torch
+        from torch.utils.data import DataLoader, TensorDataset
+
+        from emotion_analysis.training.metrics import metrics_from_predictions
+        from emotion_analysis.training.trainer import TrainArtifacts
+
+        model, tokenizer = build_model(model_key, num_labels=len(label_names))
+
+        def encode(texts: list[str]) -> tuple[torch.Tensor, torch.Tensor]:
+            enc = tokenizer(list(texts), max_length=spec.max_length)
+            return enc["input_ids"], enc["lengths"]
+
+        train_ids, train_lens = encode(list(train_texts))
+        dev_ids, dev_lens = encode(list(dev_texts))
+        train_lbl = torch.tensor(np.asarray(train_labels, dtype="float32"))
+        dev_lbl = torch.tensor(np.asarray(dev_labels, dtype="float32"))
+
+        arr = np.asarray(train_labels, dtype="float32")
+        pos_counts = arr.sum(axis=0)
+        neg_counts = len(arr) - pos_counts
+        pos_weight = torch.tensor(neg_counts / np.maximum(pos_counts, 1), dtype=torch.float32)
+        print(f"[train] pos_weight={[round(w, 2) for w in pos_weight.tolist()]}")
+
+        criterion = torch.nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+        optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-4)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=cfg.train.num_epochs)
+
+        train_loader = DataLoader(
+            TensorDataset(train_ids, train_lens, train_lbl),
+            batch_size=cfg.train.batch_size,
+            shuffle=True,
+        )
+        best_f1, best_state = 0.0, None
+        num_epochs = cfg.train.num_epochs
+        patience, no_improve = cfg.train.early_stopping_patience, 0
+
+        for epoch in range(1, num_epochs + 1):
+            model.train()
+            total_loss = 0.0
+            for ids_b, lens_b, lbl_b in train_loader:
+                optimizer.zero_grad()
+                out = model(ids_b, lengths=lens_b)
+                loss = criterion(out["logits"], lbl_b)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.train.max_grad_norm)
+                optimizer.step()
+                total_loss += loss.item()
+            scheduler.step()
+
+            model.eval()
+            with torch.no_grad():
+                dev_out = model(dev_ids, lengths=dev_lens)
+                preds = (torch.sigmoid(dev_out["logits"]) >= float(cfg.task.threshold)).numpy().astype(int)
+            metrics = metrics_from_predictions(preds, dev_lbl.numpy().astype(int), label_names=label_names)
+            f1 = metrics["f1_macro"]
+            print(f"[train] epoch={epoch} loss={total_loss/len(train_loader):.4f} dev_f1_macro={f1:.4f}")
+
+            if f1 > best_f1:
+                best_f1 = f1
+                best_state = {k: v.clone() for k, v in model.state_dict().items()}
+                no_improve = 0
+            else:
+                no_improve += 1
+                if no_improve >= patience:
+                    print(f"[train] early stopping at epoch {epoch}")
+                    break
+
+        if best_state:
+            model.load_state_dict(best_state)
+
+        output_dir.mkdir(parents=True, exist_ok=True)
+        torch.save(model.state_dict(), output_dir / "model.pt")
+        tokenizer.save_pretrained(str(output_dir))
+        import json as _json
+        (output_dir / "bilstm_config.json").write_text(_json.dumps({
+            "num_labels": model.config.num_labels,
+            "vocab_size": model.config.vocab_size,
+            "embed_dim": model.config.embed_dim,
+            "hidden_dim": model.config.hidden_dim,
+            "num_layers": model.config.num_layers,
+            "dropout": model.config.dropout,
+            "max_length": model.config.max_length,
+        }))
+
+        model.eval()
+        with torch.no_grad():
+            dev_out = model(dev_ids, lengths=dev_lens)
+            preds = (torch.sigmoid(dev_out["logits"]) >= float(cfg.task.threshold)).numpy().astype(int)
+        final_metrics = metrics_from_predictions(preds, dev_lbl.numpy().astype(int), label_names=label_names)
+        artifacts = TrainArtifacts(model=model, tokenizer=tokenizer, metrics=final_metrics, output_dir=output_dir)
     else:
         raise SystemExit(f"Unknown model type: {spec.type}")
 
