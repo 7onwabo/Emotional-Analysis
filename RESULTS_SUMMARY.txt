@@ -66,9 +66,9 @@ TRANSFORMER FINE-TUNES (AfroXLMR + AfriBERTa via HuggingFace Trainer):
 
 TRANSFER / AUGMENTATION:
   - AfriSenti intermediate-task transfer    -> outputs/afro_xlmr_base_afrisenti_transfer_all/
-    (Phase 1: fine-tune on AfriSenti sentiment; Phase 2: fine-tune on emotion)
-    Status: RUNNING at time of writing — evaluate with:
-    python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_afrisenti_transfer_all --language all
+    (Phase 1: fine-tune on AfriSenti sentiment hau+amh, 2000 examples/lang;
+     Phase 2: fine-tune on full emotion data, 3 epochs)
+    Status: COMPLETE
   - Cross-lingual transfer                  -> outputs/afro_xlmr_base_xling_hau+swa+amh_to_afr+tir+orm_fs100/
     Train: hau+swa+amh; Zero-shot eval: afr+tir+orm; Few-shot: 100 examples/lang
   - Back-translation augmentation: PENDING (run scripts/augment_train.py overnight)
@@ -130,18 +130,38 @@ KEY FINDINGS:
 5. AFRISENTI INTERMEDIATE-TASK TRANSFER (RQ3)
 --------------------------------------------------------------------------------
 
-Status: STILL RUNNING. Evaluate once complete:
-  python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_afrisenti_transfer_all --language all
+Status: COMPLETE
+Checkpoint: outputs/afro_xlmr_base_afrisenti_transfer_all/
+Report:     reports/eval/afro_xlmr_base_afrisenti_transfer_all/
 
 Setup:
-  Phase 1 — Fine-tune AfroXLMR on AfriSenti sentiment (hau+amh+orm, 2000
-  examples/lang, 3 classes: positive/negative/neutral), 3 epochs.
-  Phase 2 — Fine-tune resulting model on full emotion training data, 3 epochs.
+  Phase 1 — Fine-tune AfroXLMR on AfriSenti sentiment (hau+amh, 2000
+  examples/lang, 3 classes: positive/negative/neutral), 3 epochs, CPU mode.
+  Note: orm had no train split available via the GitHub URL used.
+  Phase 2 — Fine-tune resulting model on full 6-language emotion data, 3 epochs.
 
-Expected: modest improvement (+1-3pp) on hau/amh/orm due to shared sentiment
-representations. No benefit expected for afr/swa/tir (not in AfriSenti).
+Results (test F1 macro):
 
-Results to fill in once run completes.
+  Language  | AfroXLMR direct | AfroXLMR+AfriSenti | Delta
+  ----------+-----------------+--------------------+-------
+  Afrikaans |     0.3388      |      0.3392        | +0.0004
+  Swahili   |     0.3094      |      0.3078        | -0.0016
+  Hausa     |     0.5778      |      0.5813        | +0.0035
+  Amharic   |     0.5853      |      0.5812        | -0.0041
+  Tigrinya  |     0.4866      |      0.4676        | -0.0190
+  Oromo     |     0.4625      |      0.4539        | -0.0086
+  OVERALL   |     0.5168      |      0.5158        | -0.0010
+
+KEY FINDING (RQ3 — NEGATIVE RESULT):
+  AfriSenti intermediate-task transfer did NOT improve emotion classification.
+  Overall F1 dropped marginally (-0.001) and Tigrinya degraded by 1.9pp.
+  This is a publishable negative result. Likely reasons:
+  1. Task mismatch: 3-class single-label sentiment is structurally different
+     from 6-label multi-hot emotion classification.
+  2. Small auxiliary data (2000 examples/lang due to memory constraints).
+  3. Phase 2 emotion fine-tuning largely overwrote Phase 1 representations.
+  Conclusion: for these datasets, direct fine-tuning on emotion data is
+  preferable to sentiment-then-emotion sequential transfer.
 
 --------------------------------------------------------------------------------
 6. BACK-TRANSLATION AUGMENTATION (RQ3)
@@ -267,6 +287,7 @@ configs/
 
 ================================================================================
 END OF RESULTS SUMMARY
-Last updated: 24 May 2026
-Experiments still running: AfriSenti transfer, Augmentation (pending)
+Last updated: 25 May 2026
+Experiments complete: All except back-translation augmentation (pending overnight run)
+AfriSenti transfer: COMPLETE — negative result, see section 5
 ================================================================================

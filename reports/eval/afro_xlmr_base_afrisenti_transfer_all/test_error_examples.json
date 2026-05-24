@@ -1,0 +1,672 @@
+[
+  {
+    "text": "\u12a5\u1290\u129d\u1205 \u1230\u12ce\u127d \u12a0\u1295\u12f3\u1295\u12f4 \u1208\u1355\u122e\u130d\u122b\u121b\u1278\u12cd \u12e8\u121a\u1230\u1321\u1275 \u12a0\u122d\u12a5\u1235\u1275 \u1260\u1323\u121d \u12eb\u1235\u1240\u129b\u120d? \u12a8\u12a6\u122e\u121e\u12a6\u1290\u130d \u1260\u1235\u1270\u1240\u122d \u12a6\u1205\u12f4\u12f5\u1295 \u12e8\u121a\u12eb\u1235\u1348\u122b \u12a0\u1295\u12f3\u127d \u1290\u1308\u122d \u12e8\u1208\u121d",
+    "gold": [
+      "fear",
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 6,
+    "language": "amh"
+  },
+  {
+    "text": "\u12ad\u1233\u1265 \u1210\u12da \u1290\u12da \u1230\u1265\u12a3\u12ed \u12d8\u1270\u1348\u1208\u12e8 \u12a3\u12ce\u1295\u1273\u12ca \u12a3\u1228\u12a3\u12a5\u12eb \u12a5\u12e9 \u1290\u12ed\u1229\u1292 \u1210\u12da \u12a5\u1295\u1275\u122d\u12a5\u12ee \u130d\u1295 \u1260\u1323\u12d5\u121a \u1242\u122d \u12a2\u1209\u1292 \u1213\u12f0\u1308\u129b \u1218\u12f0\u1293\u1308\u122a \u1213\u1260\u122c\u1273\u1295\u1295 \u1275\u1295\u1270\u1293\u1295 \u12a0\u12e9 \u12dd\u1205\u1265 \u12d8\u120e \u12ad\u1233\u1265 \u1210\u12da \u12ae\u121d\u1292\u1235\u1275 \u12ae\u121d\u1292\u1235\u1275 \u1295\u12ae\u121d\u1292\u1235\u1271 \u12a5\u12c9\u1295 \u121d\u1235 \u130a\u12dc \u12d8\u12ed\u12b8\u12ed\u12f5 \u12d8\u12ed\u12a5\u121d\u1275 \u1245\u12f5\u121a\u1275 \u12d8\u12e8\u122d\u12a2 \u12dd\u1270\u1238\u12b8\u1208\u12dd\u12a3\u1228\u1308 \u1213\u12f2\u123d \u1290\u1308\u122d \u1295\u12d8\u12e8\u121d\u1255\u1263\u120d\u1235 \u1270\u12d3\u1232\u1266\u121d \u1308\u1208\u1218\u1208 \u12a3\u122a\u1309 \u12a8\u12ed\u1275\u1265\u120e \u12a3\u1265\u12dd\u12f0\u120d\u12ee \u1290\u1308\u122d \u12a8\u121d\u12dd\u12f0\u120d\u12ee \u12ed\u1275\u1295\u1275\u1295\u1348\u12a3\u120e \u12f5\u1213\u1295 \u12a3\u120e \u12a8\u12ed\u1265\u1203\u120d\u1340\u1228 \u1208\u12c9\u1322 \u1260\u12dd\u12be\u1290 \u12dd",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "tir"
+  },
+  {
+    "text": "wannan abun yabawane, gwamna ganduje. kada kaji tsoron duk wata kungiya ko wadansu munafukkai, ka aiwatar da umurnin allah.\ud83d\udcaa",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "\u12a5\u1294 \u12a0\u1295\u12f3\u1295\u12f5 \u130d\u12dc \u12a5\u12e8\u1270\u121d\u1273\u1273\u1265\u129d \u12a8\u12da\u1205\u127d \u12a2\u1275\u12ee\u1335\u12eb \u12a8\u121d\u1275\u1263\u120d\u1293 \u1230\u120b\u121d \u12a0\u1325\u1273 \u1260\u1326\u122d\u1290\u1275\u1293 \u1260\u12a5\u122d\u1235 \u1260\u12a5\u122d\u1235 \u130d\u132d\u1275 \u12a5\u12e8\u1270\u1293\u1320\u127d \u1218\u1228\u130b\u130b\u1275 \u1263\u1323\u127d\u1293 \u1218\u122a \u1263\u120d\u1270\u12cb\u1323\u120b\u1275 \u1200\u1308\u122d \u1218\u12c8\u1208\u12f4\u1295 \u1260\u12a5\u1305\u1309 \u12a5\u12eb\u121b\u1228\u122d\u12a9 \u1262\u1206\u1295\u121d \u121d\u122c\u1274\u1295\u1293 \u1200\u12d8\u1294\u1295 \u12e8\u121a\u12eb\u1235\u1228\u1233 \u12cd\u1265 \u1200\u1308\u122d\u121b\u122d\u1293 \u12c8\u1270\u1275 \u12e8\u121a\u1348\u1235\u1263\u1275 \u12e8\u121d\u12f5\u122d \u1263\u1208\u1340\u130b \u1208\u1218\u1206\u1293\u127d\u1295 \u12a0\u122d\u1263 \u121d\u1295\u132d\u1295 \u1233\u12ed \u12eb\u1201\u1209 \u121d\u122c\u1274\u1295\u1293 \u1265\u1235\u132d\u1274\u1295 \u12a0\u122d\u1263 \u121d\u1295\u132d\u1295 \u1233\u12ed \u1270\u12ab\u1235\u12a9\u129d \u12a8\u12da\u127d \u121d\u12f5\u122d \u1218\u1348\u1320\u122c\u121d \u12a5\u12f5\u1208\u129b \u1218\u1206\u1294\u1295 \u1218\u1230\u12a8\u122d\u12a9 \u130d\u1295 \u1208\u12a8\u1265\u1276\u127d \u1325\u1229 \u12a5\u1228\u129b \u12a5\u1295\u12f0\u121a\u12eb\u1235\u1348\u120d",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "amh"
+  },
+  {
+    "text": "\u12dd\u1308\u122d\u121d \u1265\u1235\u1208\u1275 \u120d\u1262 \u12c8\u1208\u12f5 \u1275\u1228\u12bb \u12dd\u1218\u1235\u120d \u1218\u122c\u1275 \u12dd\u1228\u1308\u1340 \u1213\u1242 \u12ad\u1275 \u1308\u120d\u1346 \u12a8\u120b \u12cd\u123d\u1325\u12bb \u12dd\u121d\u1235\u1325 \u12a3\u1306\u12ba \u12f5\u121b \u1205\u12dd\u1262 \u1275\u130d\u122b\u12ed \u12a8\u121d\u1272 \u12dd\u1260\u120d\u12ad\u12ee \u1229\u1205\u1229\u1201\u1295 \u1213\u120b\u12ed\u1295 \u12a5\u12e9 \u12ad\u1213\u120d\u1348\u120d\u1293 \u12a5\u12e9 \u12cd\u1295 \u12a5\u1272 \u12dd\u1260\u1340\u1210\u1293 \u1290\u1308\u122d \u12cd\u1295 \u1265\u1213\u12f0\u1308\u1345 \u1295\u1345\u1261\u1255 \u12a5\u12e9 \u120d\u1262 \u121d\u12a5\u1295\u1273\u1295 \u12ad\u1295\u1308\u1265\u122d \u12a5\u12e9 \u12d5\u12f5\u1218\u1295 \u1325\u12d0\u1293\u1295 \u1290\u1264\u1270\u1230\u1265\u12aa \u1295\u1265\u1346\u1275\u12ad\u1295 \u1295\u1213\u12e8\u1275 \u1234\u121d\u1295",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "tir"
+  },
+  {
+    "text": "gaskiya wan nan alamari ya kazanta domin babu shi a hadisi kuma babu a qur'an \ud83d\ude23\ud83d\ude1e",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "anger",
+      "fear",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "\u12a5\u123e\u12bd \u12dd\u12c8\u130b\u12a5\u1293 \u1270\u1338\u121a\u121d\u1293 \u1290\u1240\u1235\u1293\u12ee\u1361 \u1230\u12cd\u1290\u1275\u1293 \u1338\u121a\u12a1 \u1328\u12cd \u12dd\u1348\u1228\u12e8\u1361\u120d\u12d5\u120a \u1328\u12cd \u1218\u122a\u122d \u12d5\u1228 \u1235\u1208 \u12dd\u1328\u1208\u1325\u1293\u1361 \u121d\u1205\u120b\u12cd\u1293 \u12f5\u121b \u1265\u130d\u1265\u122a \u12a3\u1228\u130b\u130a\u133d\u1293\u1362 ? \u12a4\u122d\u1275\u122b \u12a5\u121d\u1295\u1272 \u1218\u123b\u122d\u12bd\u1272 \u1295\u1338\u1325\u1273\u1295 \u120d",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "tir"
+  },
+  {
+    "text": "\u12a5\u121e \u1215\u1302 \u1232 \u12c8\u12eb\u1290 \u12f5\u12ee\u121d \u12f0\u1208\u12ed\u1272 \u1230\u120b\u121d\u1295 \u134d\u1245\u122d\u1295 \u12ae\u12ed\u1296\u121d ? \u12eb\u12eb \u12a3\u12ed\u1270\u1235\u1215\u1240\u1292 \u12ab\u1348 \u12ed\u1230\u1272 \u12a3\u1208\u12b9 \u12a8\u12ed\u1270\u1260\u120b\u123d\u12c8\u1292",
+    "gold": [
+      "anger"
+    ],
+    "pred": [
+      "disgust",
+      "fear",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "tir"
+  },
+  {
+    "text": "gaskiya wan nan alamari ya kazanta domin babu shi a hadisi kuma babu a qur'an \ud83d\ude23\ud83d\ude1e",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "anger",
+      "fear",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "maar ek doen ook 'n beroep dat die aanhitsers van xenofobia, ook as dit politici is, swaar gestraf sal word.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "munisipaliteite moet die voorsiening van behuising, water, sanitasie, elektrisiteit, afvalbestuur en paaie verbeter.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "haka wata rana a kasuwa nazo wucewa wurin masu tallan magani sai kawai ya fara tallan maganin fitsarin kwance,mara mutunci yana kallona wai \u201csai kaga shantalelliyar budurwa san kowa amman abun mamaki ta tsula amalala a shinfidarta \ud83d\ude25,bakin ciki sai naji kaman dani yake.",
+    "gold": [
+      "anger",
+      "sadness"
+    ],
+    "pred": [
+      "disgust",
+      "joy",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "haka wata rana a kasuwa nazo wucewa wurin masu tallan magani sai kawai ya fara tallan maganin fitsarin kwance,mara mutunci yana kallona wai \u201csai kaga shantalelliyar budurwa san kowa amman abun mamaki ta tsula amalala a shinfidarta \ud83d\ude25,bakin ciki sai naji kaman dani yake.",
+    "gold": [
+      "anger",
+      "sadness"
+    ],
+    "pred": [
+      "disgust",
+      "joy",
+      "surprise"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "wannan abun yabawane, gwamna ganduje. kada kaji tsoron duk wata kungiya ko wadansu munafukkai, ka aiwatar da umurnin allah.\ud83d\udcaa",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "hau"
+  },
+  {
+    "text": "@<username> Ilmaan nafxanyaa Oromoo of fakkeessan amanuu hogganoota Oromootu rakkoo guddaa ummata keenyarratti fidaa jira . Kuni mormituu Oromoo hundumaa laallata . Abiyiifi Shameen karoora diina dhokataa hojiitti hiika jiru.",
+    "gold": [
+      "disgust",
+      "fear"
+    ],
+    "pred": [
+      "anger",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "orm"
+  },
+  {
+    "text": "maar ek doen ook 'n beroep dat die aanhitsers van xenofobia, ook as dit politici is, swaar gestraf sal word.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "munisipaliteite moet die voorsiening van behuising, water, sanitasie, elektrisiteit, afvalbestuur en paaie verbeter.",
+    "gold": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 5,
+    "language": "afr"
+  },
+  {
+    "text": "\u12a3\u12ed\u1270 \u1265\u12ad\u1265\u1228\u1275\u12ab \u122d\u1213\u1250\u120d\u1293 \u12ab\u1265 \u121d\u1233\u12bd\u121d \u1215\u1265\u1228\u1275 \u1295\u1218\u12cb\u12a5\u120d \u12b2\u1293\u1275 \u12ed\u1215\u1238\u1293 \u121d\u1233\u12bd\u121d \u1295\u1235\u12bd\u121d \u1230\u1263\u1275 \u12f2\u12bd\u121d \u1295\u1235\u12bd\u121d \u12a3\u122b\u12ca\u1275 \u12a3\u130b\u1295\u1295\u1272 \u1276\u1295\u12ae\u120e\u129b\u1273\u1275 \u1218\u1273\u1208\u120d\u1272 \u1320\u120b\u121b\u1275 \u12a8\u1213\u12f5\u1272 \u12d8\u12ed\u1295\u1265\u1228\u1275\u12ad\u121d \u12d8\u12ed\u1308\u1295\u12d8\u1265\u12ad\u121d \u12d8\u12ed\u1263\u1215\u122d\u12ad\u121d \u12a5\u1275\u121d\u1290\u12e9 \u12a5\u1235\u1275\u1230\u122d\u1251 \u12a5\u1275\u1215\u1231\u12f1 \u12a5\u1275\u12d8\u122d\u1349 \u12d5\u130d\u1260\u1275 \u12d8\u12ed\u1265\u120d\u12ad\u121d \u1270\u1218\u1235\u1308\u1295 \u12a3\u121d\u120b\u12b8\u12ed \u1265\u12dd\u1203\u1265\u12ab\u1292 \u12d5\u1309\u1265 \u12a2\u12e8 \u121d\u1263\u120d \u12d8\u12ed\u1275\u1348\u120d\u1321 \u1230\u1263\u1275 \u1295\u121d\u1255\u1273\u120d \u12f5\u1215\u122d \u12d8\u12ed\u1275\u1265\u1209 \u1265\u1235\u1234\u12d4 \u12dd\u12d3\u12c8\u122d\u12ad\u121d \u12a3\u1228\u1218\u1290\u1273\u1275 \u12a3\u1205\u12db\u1265 \u12a2\u12bd\u121d",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "tir"
+  },
+  {
+    "text": "\u12a3\u1215\u1215 \u1270\u130b\u1229 \u12d3\u12ed\u1290\u12e8 \u1308\u1208 \u12a8\u12ed\u1308\u1265\u122e\u121d \u12a3\u12aa\u1261 \u1348\u122a\u1210 \u12a3\u1290\u1235",
+    "gold": [
+      "fear"
+    ],
+    "pred": [
+      "disgust",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "tir"
+  },
+  {
+    "text": "allah ya yi min wahayi game da cutar coronavirus \u2013 babban fasto",
+    "gold": [
+      "surprise"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "\u12a2\u1275\u12ee\u1335\u12eb\u12ca \u1201\u1209 \u12f0\u1235 \u12ed\u1260\u1208\u12cd \u12ed\u1205\u1295\u1295 \u12e8\u121a\u1320\u120b \u12e8\u1325\u120b\u127b \u1218\u1290\u1345\u122d \u12e8\u1270\u1308\u1320\u1218\u1208\u1275 \u1230\u12cd \u1265\u127b \u1290\u12cd \u12c8\u12f3\u1306\u127c \u1325\u120b\u127b \u12a5\u12ae \u1324\u1295\u1290\u1275\u1295 \u12ed\u130e\u12f3\u120d",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "amh"
+  },
+  {
+    "text": "dit is so dat voedselpryse die afgelope jaar vinniger as inflasie gestyg het.",
+    "gold": [
+      "anger",
+      "fear",
+      "sadness"
+    ],
+    "pred": [
+      "joy"
+    ],
+    "n_wrong": 4,
+    "language": "afr"
+  },
+  {
+    "text": "@<username> Dr Awwal Alloo akkam jirta . Yeroo baay'ee OMN n sin caqasa . Yaadni keessan gaarii dha . Jabaadhaa jajjabaadhaa nafxanyaa buqqifna bikka jirruun . Inshallaah",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "orm"
+  },
+  {
+    "text": "wanawake si watu wazuri haha",
+    "gold": [
+      "disgust",
+      "fear"
+    ],
+    "pred": [
+      "joy",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "swa"
+  },
+  {
+    "text": "\u1308\u1293 \u12a8\u12da\u1205 \u12e8\u12a8\u134b \u1325\u1243\u1275 \u12ed\u12f0\u122d\u1235\u1263\u1273\u120d\u1362\u1295\u1201\u12ad\u120c\u122d \u120a\u12d8\u1295\u1265\u1263\u1275 \u12ed\u127d\u120b\u120d!",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "amh"
+  },
+  {
+    "text": "\u12a0\u1264\u1275 \u1235\u1228 \u12c8\u12ed\u1295 \u12a5\u12da \u12c8\u122b\u122a \u1213\u12ed\u120a \u12a5\u130d\u1228\u12ed \u12a0\u12cd\u133d\u1292 \u121d\u1263\u1209 \u12d8\u12ed\u1270\u122d\u134d\u12e9",
+    "gold": [
+      "surprise"
+    ],
+    "pred": [
+      "disgust",
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "tir"
+  },
+  {
+    "text": "\u1351\u1272\u1295 \u1229\u1232\u12eb \u1293\u134d\u1240\u12c9\u129d \u1290\u1260\u122d\u12e8\u1229\u1232\u12eb \u1205\u12dd\u1265 \u12a5\u12f0\u121a\u1218\u122d\u1321\u1275 \u12a5\u122d\u130d\u1320\u129b \u1290\u129d \u12a5\u1231\u121d \u12ed\u12c8\u12f3\u12f0\u122b\u120d \u12e8\u12e9\u12a9\u122c\u1295\u1295 \u1326\u122d\u1290\u1275 \u1233\u12ed\u124b\u132d \u1235\u120d\u1323\u1291\u1295 \u12a0\u12ed\u1270\u12c9\u121d",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear"
+    ],
+    "n_wrong": 4,
+    "language": "amh"
+  },
+  {
+    "text": "yani the devil tempted jesus 3 times without success, yesu ata hajakaa kenya siku tatu hunnays mshamvutisha sheesha, hatarr bin danger.",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "anger",
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "swa"
+  },
+  {
+    "text": "those people who cut tissue without following the dotted line shida iko wapi lakini??",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "anger",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "swa"
+  },
+  {
+    "text": "ci da buguzum: an kama su yayin da suke tsaka da yiwa jama\u2019a fashi da bindigar bogi",
+    "gold": [],
+    "pred": [
+      "anger",
+      "disgust",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "babbar magana: jami'ai sun cafke wani bawan allah da ya \u0257irkawa \u0257iyarsa ciki har ta haihu",
+    "gold": [
+      "disgust",
+      "sadness"
+    ],
+    "pred": [
+      "fear",
+      "joy",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "\u1308\u12eb\u1345 \u12ab\u1265 \u1275\u130d\u12e8\u1345 \u12a5\u1271 \u12a0\u1265 \u1308\u12db \u1270\u1213\u1262\u12a5 \u12a8\u1215\u120d\u134e \u12a5\u12e8 \u12dd\u1265 \u12d8\u120e \u12c8\u12f2\u12ae\u1290 \u1313\u120d \u1218\u12d3\u120d\u1272 \u1218\u12d3\u120d\u1272 \u12d8\u12ed\u1275\u1290\u130d\u122d\u12ce \u1213\u1260\u122c\u1273 \u1265\u121d\u1235\u12a0\u1295 \u1260\u120d \u12a8\u1235 tmh \u12f0\u1235 \u12ed\u1260\u120d\u12a9\u121d \u12db\u130a\u12f5 \u1265\u12d5\u120a \u12dd\u1270\u1348\u1208\u1320 \u1265\u127b \u120d\u12d5\u120a 250 \u12c8\u1323\u1273\u1275 \u123b\u12d5\u1262\u12eb \u1228\u123a\u1295\u12ce\u121d \u12a0\u120e \u12a0\u1265\u12d3\u12f5\u12cb \u12dd\u12f5\u1348\u122b \u1218\u1295 \u12ad\u1246\u1345\u122e \u12a5\u1293 \u1270\u1320\u12e8\u1245\u1272 \u12a2\u12a9\u121d \u12a0\u1271\u121d \u130b\u1200\u1275\u134d \u130b\u12d8\u1320\u129b\u1273\u1275 \u1275\u121d\u122d\u1272 \u121d\u1200\u1265 \u12ad\u12a0\u1265\u12e8\u12a9\u121d \u12e8\u1210\u12dd\u1295 \u1295\u1233\u1276\u121d\u1235 \u12f3\u122d\u130b \u12a8\u120d\u1262 \u121e\u1275 \u121e\u12ed\u1276\u121d \u12a0\u1208\u12c9 \u12a5\u1293 \u1290\u1276\u121d \u12dd\u1270\u1228\u1349 \u12d8\u12ed\u1273\u1213\u12db \u12d8\u1208\u12cb \u12a8\u1270\u121b\u1273\u1275 \u1295\u1308\u122d\u12ce\u121d \u12cb\u12ed\u12ed \u12a0\u1265 \u12d8",
+    "gold": [
+      "anger",
+      "sadness"
+    ],
+    "pred": [
+      "disgust",
+      "joy"
+    ],
+    "n_wrong": 4,
+    "language": "tir"
+  },
+  {
+    "text": "\u1235\u1273\u120a\u1295 \u1213\u12c8\u12ed \u12ab\u1265 \u12d8\u1348\u1275\u12ce\u1295 \u12d8\u12f5\u1295\u1246\u1295 \u130b\u12dc\u1320\u129b \u1295\u1235\u12bb \u12a2\u12bb",
+    "gold": [
+      "joy"
+    ],
+    "pred": [
+      "disgust",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "tir"
+  },
+  {
+    "text": "wata sabuwa kenan muna kirawa alumma dacewar sai mun\u0199ara komawa ga allah kana musamu mafita a rayuwa",
+    "gold": [
+      "fear",
+      "sadness",
+      "surprise"
+    ],
+    "pred": [
+      "joy"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "ci uwarsu babah tsula musu kebil\ud83d\ude02\ud83d\ude02\ud83d\ude02\ud83d\ude02\ud83d\ude02",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "joy",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "kom ons hou op om gesteelde goedere te koop.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 4,
+    "language": "afr"
+  },
+  {
+    "text": "dit is so dat voedselpryse die afgelope jaar vinniger as inflasie gestyg het.",
+    "gold": [
+      "anger",
+      "fear",
+      "sadness"
+    ],
+    "pred": [
+      "joy"
+    ],
+    "n_wrong": 4,
+    "language": "afr"
+  },
+  {
+    "text": "waye wannan zai yi min kwacen rahama \ud83e\udd14\ud83d\udcaa",
+    "gold": [],
+    "pred": [
+      "anger",
+      "fear",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "but seriously, hawa wa jamaica hushinda wakisema mambo ya kurudi motherland, hawaonagi vile shamba zimeibiwa na watu wanachinjana?",
+    "gold": [
+      "fear",
+      "sadness"
+    ],
+    "pred": [
+      "anger",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "swa"
+  },
+  {
+    "text": "as die nasionale regering wat die wette maak, nie die gemors kan uitsorteer nie, gaan die wes-kaapse regering ingryp.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "afr"
+  },
+  {
+    "text": "kom ons hou op om gesteelde goedere te koop.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "joy"
+    ],
+    "n_wrong": 4,
+    "language": "afr"
+  },
+  {
+    "text": "\u121d\u1295\u121d \u12ed\u1201\u1295 \u121d\u1295 \u12e8\u1270\u1230\u1229\u1275\u1295 \u1235\u122b\u12ce\u127d \u12a0\u12f0\u1295\u1243\u1208\u1201 \u1230\u120b\u121d \u1262\u1296\u122d \u121d\u1295 \u12eb\u1205\u120d \u120a\u1230\u122b \u12a5\u1295\u12f0\u121a\u127b\u120d \u121b\u1233\u12eb \u1293\u1278\u12cd \u130d\u1295 \u130d\u122d\u121d \u12e8\u121a\u1208\u129d \u1320\u1245\u120b\u12e9 \u1208\u12ab\u1262\u1292\u12eb\u1278\u12cd \u12eb\u120b\u1278\u12cd\u1295 \u1295\u1240\u1275 \u12e8\u121a\u12eb\u1233\u12ed \u1309\u1265\u129d\u1275 \u12ed\u1218\u1235\u1208\u129b\u120d \u1208\u121d\u1295 \u12a5\u1290\u12da\u1205 \u1275\u120d\u120d\u1245 \u1355\u122e\u1300\u12ad\u1276\u127d \u1232\u1230\u1229 \u12ab\u1262\u1294\u12cd \u12a0\u12eb\u12cd\u1245\u121d \u1290\u1260\u122d \u12a5\u1295\u12f4 \u12db\u122c \u12a5\u1295\u12f0 \u12a0\u12f2\u1235 \u12a5\u1295\u12f0 \u12a5\u1294\u1293 \u12a0\u1295\u127a \u1308\u1208\u133b \u12e8\u121a\u12f0\u1228\u130d\u120b\u1278\u12cd \u12a5\u1290\u122d\u1231\u121d \u1260\u130d\u122d\u121d\u1275\u1293 \u1260\u1275\u1295\u130d\u122d\u1275 \u1232\u12eb\u12e9 \u1233\u12ed \u12ed\u1308\u122d\u1218\u129b\u120d",
+    "gold": [
+      "disgust",
+      "joy",
+      "surprise"
+    ],
+    "pred": [
+      "anger",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "amh"
+  },
+  {
+    "text": "hulle moet regmaak daar waar hulle verbrou het.",
+    "gold": [
+      "anger",
+      "disgust"
+    ],
+    "pred": [
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "afr"
+  },
+  {
+    "text": "amma dai ke yar iskace me kammanin karuwai kawai \ud83d\ude0f\ud83d\ude0f",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "anger",
+      "sadness",
+      "surprise"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "\u12cb\u12ed \u1205\u12dd\u1260\u12ed \u12a0\u12f0\u1263\u1263\u12ed \u130d\u12f0\u1293\u1273\u1275 \u1275\u130d\u122b\u12ed \u12c8\u133a\u12a1 \u12a5\u121d\u1260\u122d \u1270\u130b\u12f3\u120b\u12ed \u12ad\u1265\u120d \u12a8\u121d \u1290\u1265\u1230 \u1339\u122d \u130b\u120d \u12a0\u1295\u1235\u1270\u12ed\u1275 \u121b\u12d3\u12dd \u12a5\u12e8 \u12dd\u12c8\u120d\u12f6 \u12a2\u120b \u1275\u132d\u1290\u1252 \u12ed\u1218\u1235\u120d \u12a0\u120d\u12b9 \u12f5\u1243\u1235 \u12e8\u1208\u1295",
+    "gold": [
+      "fear",
+      "sadness"
+    ],
+    "pred": [
+      "anger",
+      "disgust"
+    ],
+    "n_wrong": 4,
+    "language": "tir"
+  },
+  {
+    "text": "\u12d3\u12ad\u12ad \u12cb\u12ed\u1205\u12dd\u1260\u12ed \u12c8\u12ee \u12a2\u1275\u12ee\u133d\u12eb \u1293\u12ed\u1230\u120b\u121d \u12f5\u122d\u12f5\u122d \u1273\u12ed\u1308\u1265\u122d \u12a3\u120e \u1295\u12ad\u12a8\u120b\u12a8\u1208\u120d\u1293 \u12f5\u12e9\u1235 \u1295\u12a8\u1325\u134d\u12a0\u1293 \u12d5\u1325\u1242 \u12d8\u134d\u1275\u1215 \u12d8\u120e \u12cb\u12a5 \u1328\u1290\u1240\u1293\u12ae",
+    "gold": [
+      "fear"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "tir"
+  },
+  {
+    "text": "Yaaa rabbbiii nuraaa kaaasiii Abiyoootiii kaaasayeee marataaa ummmaaata dararaaaniii fixeee",
+    "gold": [
+      "disgust"
+    ],
+    "pred": [
+      "anger",
+      "joy",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "orm"
+  },
+  {
+    "text": "so watu wenye wanaogopa giza, tutafanya nini hizi candle zikiisha?",
+    "gold": [
+      "surprise"
+    ],
+    "pred": [
+      "anger",
+      "fear",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "swa"
+  },
+  {
+    "text": "kai ahe dai tsohuwa ce shiyasa take painting fuskar ta \ud83d\ude2d\ud83d\ude2d\ud83d\ude2d",
+    "gold": [
+      "surprise"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "sadness"
+    ],
+    "n_wrong": 4,
+    "language": "hau"
+  },
+  {
+    "text": "Bilxiginnaan umatta Oromoo ka isaani hin saganna karaa maraan miidhaa jirti . Kunoo umatta Shaashamannee bishaan nanaya garii-rraa mur-ttee rakkisaa jirti . URL",
+    "gold": [
+      "sadness"
+    ],
+    "pred": [
+      "anger",
+      "disgust",
+      "fear"
+    ],
+    "n_wrong": 4,
+    "language": "orm"
+  }
+]
