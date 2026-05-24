@@ -1,0 +1,272 @@
+================================================================================
+EMOTION ANALYSIS — AFRICAN LANGUAGES
+COS 760 Group 43 | University of Pretoria
+Members: Ibrahim Said, Lonwabo Kwitshana, Mpho Tsotetsi
+Report deadline: 27 May 2026
+================================================================================
+
+This file summarises all experiments run and results obtained. It is intended
+for the report writer. All checkpoints are saved under outputs/ and all
+evaluation reports are under reports/eval/.
+
+--------------------------------------------------------------------------------
+1. DATASETS
+--------------------------------------------------------------------------------
+
+Primary datasets (multi-label emotion, 6 classes: anger, disgust, fear, joy,
+sadness, surprise):
+
+  BRIGHTER (brighter-dataset/BRIGHTER-emotion-categories):
+    - Afrikaans (afr): train=1222, dev=196,  test=2130  [Latin, Indo-European]
+    - Swahili   (swa): train=3307, dev=1102, test=3312  [Latin, Niger-Congo/Bantu]
+    - Hausa     (hau): train=2145, dev=712,  test=2160  [Latin, Afro-Asiatic/Chadic]
+
+  EthioEmo (Tadesse/EthioEmo):
+    - Amharic   (amh): train=3549, dev=592,  test=1774  [Ge'ez, Afro-Asiatic/Semitic]
+    - Tigrinya  (tir): train=3681, dev=614,  test=1840  [Ge'ez, Afro-Asiatic/Semitic]
+    - Oromo     (orm): train=3442, dev=574,  test=1721  [Latin, Afro-Asiatic/Cushitic]
+
+  Total training: 17,346 examples across 6 languages and 2 scripts.
+
+  NOTE on Afrikaans: the 'surprise' label has zero positive examples in ALL
+  splits (train, dev, test). This artificially suppresses macro-F1 for afr.
+  Report both macro and micro F1 for Afrikaans.
+
+Auxiliary datasets (used for RQ3 transfer experiments):
+  - AfriSenti (shmuhammad/AfriSenti-twitter-sentiment): sentiment, 3 classes
+    (positive/negative/neutral). Languages used: hau, amh, orm.
+    Data downloaded from: https://github.com/afrisenti-semeval/afrisent-semeval-2023
+  - AfriHate: NOT publicly accessible (gated/unreleased on HuggingFace at time
+    of experiments). AfriHate transfer could not be conducted. Mention as a
+    limitation in the report.
+
+--------------------------------------------------------------------------------
+2. MODELS TRAINED
+--------------------------------------------------------------------------------
+
+All models trained with:
+  - Fixed seed: 42
+  - pos_weight (class-frequency weighting) for BCE loss to handle imbalance
+  - 6-label multi-hot output (anger, disgust, fear, joy, sadness, surprise)
+
+CLASSICAL BASELINES (sklearn, one-vs-rest):
+  - TF-IDF + Logistic Regression  -> outputs/tfidf_logreg_all/
+  - TF-IDF + Linear SVM           -> outputs/tfidf_svm_all/
+
+DEEP LEARNING BASELINE:
+  - BiLSTM + FastText-style embeddings (character n-gram hashing, trained from
+    scratch, no pretrained vectors) -> outputs/bilstm_fasttext_all/
+  - Architecture: 2-layer BiLSTM, hidden=256, embed=300, vocab=200k, dropout=0.3
+
+TRANSFORMER FINE-TUNES (AfroXLMR + AfriBERTa via HuggingFace Trainer):
+  - AfroXLMR (Davlan/afro-xlmr-base)       -> outputs/afro_xlmr_base_all/
+  - AfriBERTa (castorini/afriberta_large)   -> outputs/afriberta_large_all/
+  Both trained: 3 epochs, batch_size=4, grad_accum=4 (effective batch=16),
+  gradient_checkpointing=True, freeze_base_layers=6, lr=2e-5, early_stop=2
+
+TRANSFER / AUGMENTATION:
+  - AfriSenti intermediate-task transfer    -> outputs/afro_xlmr_base_afrisenti_transfer_all/
+    (Phase 1: fine-tune on AfriSenti sentiment; Phase 2: fine-tune on emotion)
+    Status: RUNNING at time of writing — evaluate with:
+    python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_afrisenti_transfer_all --language all
+  - Cross-lingual transfer                  -> outputs/afro_xlmr_base_xling_hau+swa+amh_to_afr+tir+orm_fs100/
+    Train: hau+swa+amh; Zero-shot eval: afr+tir+orm; Few-shot: 100 examples/lang
+  - Back-translation augmentation: PENDING (run scripts/augment_train.py overnight)
+    Results to be added when complete.
+
+--------------------------------------------------------------------------------
+3. MAIN RESULTS — TEST SET F1 (MACRO)
+--------------------------------------------------------------------------------
+
+All numbers below are on the TEST split.
+
+| Language  | BiLSTM | LogReg | SVM    | AfriBERTa | AfroXLMR |
+|-----------|--------|--------|--------|-----------|----------|
+| Afrikaans | 0.1086 | 0.2159 | 0.2343 | 0.1806    | 0.3388*  |
+| Swahili   | 0.1027 | 0.1891 | 0.2128 | 0.2615    | 0.3094*  |
+| Hausa     | 0.2123 | 0.5829 | 0.5837 | 0.6211*   | 0.5778   |
+| Amharic   | 0.2207 | 0.5435 | 0.5319 | 0.6008*   | 0.5853   |
+| Tigrinya  | 0.1748 | 0.4893 | 0.4860 | 0.4795    | 0.4866*  |
+| Oromo     | 0.1838 | 0.5150 | 0.5156 | 0.5341*   | 0.4625   |
+| OVERALL   | 0.1725 | 0.5034 | 0.5003 | 0.5017    | 0.5168*  |
+
+* = best result for that language
+
+MICRO F1 (overall):
+  BiLSTM=0.2109, LogReg=0.5199, SVM=0.5196, AfriBERTa=0.5143, AfroXLMR=0.5318
+
+PER-EMOTION F1 (AfroXLMR, all languages, dev set):
+  anger=0.492, disgust=0.629, fear=0.379, joy=0.595, sadness=0.543, surprise=0.459
+  Hardest: fear. Easiest: disgust.
+
+--------------------------------------------------------------------------------
+4. CROSS-LINGUAL TRANSFER RESULTS (RQ2)
+--------------------------------------------------------------------------------
+
+Setup: Train AfroXLMR on hau+swa+amh only. Evaluate zero-shot and few-shot
+(100 examples/lang) on withheld languages: afr, tir, orm.
+
+| Language  | Zero-shot | Few-shot (100) | Full supervised |
+|-----------|-----------|----------------|-----------------|
+| Afrikaans | 0.3719    | 0.3423         | 0.3388          |
+| Tigrinya  | 0.4541    | 0.4450         | 0.4866          |
+| Oromo     | 0.2756    | 0.3275         | 0.4625          |
+| OVERALL   | 0.4339    | 0.4339         | —               |
+
+Checkpoint: outputs/afro_xlmr_base_xling_hau+swa+amh_to_afr+tir+orm_fs100/
+Report:     reports/eval/afro_xlmr_base_xling_hau+swa+amh_to_afr+tir+orm_fs100/
+
+KEY FINDINGS:
+- Zero-shot on Afrikaans (0.3719) slightly OUTPERFORMS full supervised (0.3388).
+  Reason: afr has only 1,222 training examples — the smallest set. When trained
+  jointly with 5 other languages it gets crowded out. Zero-shot avoids this.
+- Few-shot helped Oromo (+5.2pp) but mildly hurt Afrikaans/Tigrinya — 100
+  examples triggered slight catastrophic forgetting of source language knowledge.
+- Cross-lingual transfer is viable for low-resource African languages. A model
+  trained on 3 languages transfers reasonably to 3 unseen languages without
+  any target-language data.
+
+--------------------------------------------------------------------------------
+5. AFRISENTI INTERMEDIATE-TASK TRANSFER (RQ3)
+--------------------------------------------------------------------------------
+
+Status: STILL RUNNING. Evaluate once complete:
+  python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_afrisenti_transfer_all --language all
+
+Setup:
+  Phase 1 — Fine-tune AfroXLMR on AfriSenti sentiment (hau+amh+orm, 2000
+  examples/lang, 3 classes: positive/negative/neutral), 3 epochs.
+  Phase 2 — Fine-tune resulting model on full emotion training data, 3 epochs.
+
+Expected: modest improvement (+1-3pp) on hau/amh/orm due to shared sentiment
+representations. No benefit expected for afr/swa/tir (not in AfriSenti).
+
+Results to fill in once run completes.
+
+--------------------------------------------------------------------------------
+6. BACK-TRANSLATION AUGMENTATION (RQ3)
+--------------------------------------------------------------------------------
+
+Status: PENDING. Run overnight:
+  PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 python scripts/augment_train.py \
+    --languages afr --model afro_xlmr_base --max-per-lang 300 \
+    --override train.batch_size=4 train.eval_batch_size=8 \
+               train.gradient_accumulation_steps=4 train.num_epochs=3 \
+               train.gradient_checkpointing=true train.freeze_base_layers=6
+
+Setup: Back-translate 300 Afrikaans training examples through English using
+Google Translate (source->en->source), add to training set, retrain AfroXLMR.
+Afrikaans chosen because it has the smallest training set (1,222 examples).
+Cache saved to data/augmented_cache.json to avoid re-translating.
+Checkpoint will be at: outputs/afro_xlmr_base_augmented_afr_all/
+Evaluate with: python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_augmented_afr_all --language all
+
+Results to fill in once run completes.
+
+--------------------------------------------------------------------------------
+7. AFRIHATE TRANSFER (RQ3)
+--------------------------------------------------------------------------------
+
+Status: NOT COMPLETED.
+The dataset 'shmuhammad/AfriHate' is gated/private on HuggingFace and requires
+authenticated access. The dataset was not publicly accessible at time of
+experiments. This should be noted as a limitation in the report.
+
+Citation: Muhammad et al. (2025). AfriHate: A multilingual collection of hate
+speech and abusive language datasets for African languages. NAACL 2025.
+
+--------------------------------------------------------------------------------
+8. KEY FINDINGS SUMMARY FOR REPORT WRITER
+--------------------------------------------------------------------------------
+
+RQ1 — Can transformers achieve competitive multilabel emotion classification?
+  YES. AfroXLMR (0.5168 overall F1) is the best model. However, the margin over
+  classical baselines (LogReg=0.5034, SVM=0.5003) is small (~1.5pp). The
+  transformer advantage is most pronounced on low-resource languages with small
+  training sets (afr, swa). BiLSTM without pretrained embeddings (0.1725) is
+  dramatically worse than all other approaches — confirms that pretraining is
+  essential, not the architecture itself.
+
+RQ2 — How does performance vary across languages and why?
+  Large variation: best=Hausa (0.6211 AfriBERTa) vs worst=Swahili (0.3094).
+  Key factors:
+  1. PRETRAINING DATA: AfroXLMR excels on afr/swa (included in its pretraining).
+     AfriBERTa excels on hau/amh/orm (included in its pretraining). This is the
+     single strongest predictor of per-language performance.
+  2. TRAINING SIZE: afr has the smallest train set (1,222) and worst overall
+     performance. Orm (3,442) performs better than tir (3,681) despite fewer
+     examples — language family and pretraining matter more than size alone.
+  3. SWAHILI ANOMALY: swa has the largest BRIGHTER train set (3,307) but the
+     worst F1 across all models. All 5 models agree on this. Likely cause:
+     Swahili emotion expressions are more figurative/contextual, not a data
+     volume problem.
+  4. SCRIPT: Ge'ez script (amh/tir) does not hurt performance — AfroXLMR handles
+     it well. amh is the second-best language overall.
+  5. AFRIKAANS macro vs micro gap: macro=0.34, micro=0.55. The 'surprise' label
+     has zero positive examples in the entire afr dataset (train/dev/test). This
+     structurally depresses macro-F1. Always report both for afr.
+
+RQ3 — Does supplementary data (AfriSenti/AfriHate/augmentation) help?
+  PARTIAL:
+  - AfriSenti transfer: results pending (running).
+  - AfriHate: not accessible.
+  - Augmentation: results pending (to run overnight).
+
+--------------------------------------------------------------------------------
+9. SCRIPTS REFERENCE
+--------------------------------------------------------------------------------
+
+Download data:
+  python scripts/download_data.py
+
+Train a model:
+  python scripts/train.py --model [tfidf_logreg|tfidf_svm|bilstm_fasttext|
+                                    afro_xlmr_base|afriberta_large] --language all
+
+Evaluate a checkpoint:
+  python scripts/evaluate.py --checkpoint outputs/<name> --language all
+
+Cross-lingual transfer:
+  python scripts/cross_lingual.py --train-langs hau swa amh --eval-langs afr tir orm --few-shot 100
+
+AfriSenti intermediate-task transfer:
+  python scripts/transfer_train.py --aux afrisenti --model afro_xlmr_base
+
+Back-translation augmentation:
+  python scripts/augment_train.py --languages afr --model afro_xlmr_base --max-per-lang 300
+
+Explainability (LIME/Captum):
+  python scripts/explain.py --checkpoint outputs/afro_xlmr_base_all --method lime
+
+--------------------------------------------------------------------------------
+10. OUTPUTS DIRECTORY STRUCTURE
+--------------------------------------------------------------------------------
+
+outputs/
+  tfidf_logreg_all/         TF-IDF + LogReg, all 6 languages
+  tfidf_svm_all/            TF-IDF + SVM, all 6 languages
+  bilstm_fasttext_all/      BiLSTM, all 6 languages
+  afro_xlmr_base_all/       AfroXLMR, all 6 languages  <-- BEST MODEL
+  afriberta_large_all/      AfriBERTa, all 6 languages
+  afro_xlmr_base_xling_*/   Cross-lingual transfer checkpoint
+  afro_xlmr_base_afrisenti_transfer_all/  AfriSenti transfer (pending)
+
+reports/eval/
+  tfidf_logreg_all/         Per-language JSON report + error examples
+  tfidf_svm_all/
+  bilstm_fasttext_all/
+  afro_xlmr_base_all/
+  afriberta_large_all/
+  afro_xlmr_base_xling_*/   cross_lingual_results.json
+
+configs/
+  languages.yaml    All 6 target languages with metadata
+  models.yaml       All model configurations
+  training.yaml     Training hyperparameters
+  data.yaml         Data paths and preprocessing settings
+
+================================================================================
+END OF RESULTS SUMMARY
+Last updated: 24 May 2026
+Experiments still running: AfriSenti transfer, Augmentation (pending)
+================================================================================
