@@ -42,7 +42,7 @@ def multilabel_to_vector(labels: list[str], label_order: list[str]) -> list[int]
 
 
 def preprocess_examples(
-    examples: list,  # list[EmotionExample] — typed loose to avoid import cycle
+    examples: list,  
     *,
     min_chars: int = 3,
     max_chars: int | None = 512,

@@ -1,16 +1,8 @@
 """Exploratory data analysis for the BRIGHTER target-language splits.
 
 Produces:
-    reports/eda/brighter_summary.json    — machine-readable per-lang/split stats
-    reports/eda/brighter_summary.md      — human-readable digest
-
-Stats per (language, split):
-    * row count
-    * label frequency + prevalence (incl. null vs zero distinction)
-    * mean labels per example (multilabel "density")
-    * label co-occurrence matrix
-    * text-length histogram (chars + whitespace-tokens)
-    * empty / duplicate text counts
+    reports/eda/brighter_summary.json   
+    reports/eda/brighter_summary.md     
 
 Run after `scripts/download_data.py`:
     python scripts/eda.py
@@ -29,9 +21,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from emotion_analysis import EMOTION_LABELS  # noqa: E402
-from emotion_analysis.data.loaders import load_brighter  # noqa: E402
-from emotion_analysis.utils.config import load_config  # noqa: E402
+from emotion_analysis import EMOTION_LABELS  
+from emotion_analysis.data.loaders import load_brighter  
+from emotion_analysis.utils.config import load_config  
 
 
 def _bucket(n: int) -> str:

@@ -30,9 +30,6 @@ def per_language_report(
     langs = np.asarray(languages)
 
     def _zero_support(y: np.ndarray) -> list[str]:
-        # Labels with no gold positives in this slice: macro-F1 scores them 0
-        # (zero_division=0), so they drag the macro down without reflecting model
-        # quality. afr `surprise` is the canonical case (null in BRIGHTER).
         support = y.sum(axis=0)
         return [label_names[i] for i in range(len(label_names)) if support[i] == 0]
 

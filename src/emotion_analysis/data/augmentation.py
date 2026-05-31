@@ -9,7 +9,6 @@ from __future__ import annotations
 import time
 from typing import Protocol
 
-# ISO 639-1 codes that Google Translate expects for our target languages
 LANG_TO_GOOGLE: dict[str, str] = {
     "afr": "af",
     "swa": "sw",
@@ -32,7 +31,7 @@ class BackTranslationAugmenter:
     """
 
     def __init__(self, delay: float = 0.3) -> None:
-        self.delay = delay  # seconds between API calls
+        self.delay = delay  
 
     def augment(self, text: str, language: str) -> list[str]:
         from deep_translator import GoogleTranslator

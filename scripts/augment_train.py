@@ -1,14 +1,6 @@
 """Back-translation augmentation + retrain (RQ3).
-
 Augments training data for specified languages via Google Translate round-trip,
 then retrains the best model (AfroXLMR) on the augmented set.
-
-Examples:
-    # Augment afr (smallest train set) and retrain
-    python scripts/augment_train.py --languages afr --model afro_xlmr_base --max-per-lang 300
-
-    # Augment all low-resource languages
-    python scripts/augment_train.py --languages afr swa tir orm --model afro_xlmr_base --max-per-lang 500
 """
 
 from __future__ import annotations
@@ -75,11 +67,9 @@ def main() -> None:
     cache = load_cache(args.cache)
     augmenter = BackTranslationAugmenter(delay=0.3)
 
-    # Load full training set for all languages
     train_texts, train_labels, train_langs_list = build_split(cfg, all_languages, "train")
     dev_texts, dev_labels, _ = build_split(cfg, all_languages, "dev")
 
-    # Augment only the specified languages
     aug_texts: list[str] = []
     aug_labels: list[list[int]] = []
 
@@ -113,12 +103,10 @@ def main() -> None:
 
     print(f"[augment] total augmented examples: {len(aug_texts)}")
 
-    # Combine original + augmented
     combined_texts = list(train_texts) + aug_texts
     combined_labels = np.vstack([train_labels, np.array(aug_labels, dtype=np.int8)]) if aug_labels else train_labels
     print(f"[augment] combined train size: {len(combined_texts)} (original={len(train_texts)}, aug={len(aug_texts)})")
 
-    # Train
     output_dir = Path(cfg.paths.output_dir) / f"{model_key}_augmented_{'_'.join(aug_langs)}_all"
     model, tokenizer = build_model(model_key, num_labels=len(label_names))
     train_ds = build_hf_dataset(combined_texts, combined_labels, tokenizer, spec.max_length)

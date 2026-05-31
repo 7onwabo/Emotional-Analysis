@@ -1,9 +1,4 @@
-"""Train a model on the configured language(s).
-
-Examples:
-    python scripts/train.py --model tfidf_logreg --language afr
-    python scripts/train.py --model afro_xlmr_base --language all
-    python scripts/train.py --model afro_xlmr_base --language swa --override train.num_epochs=3
+"""Train a model on the configured languages.
 """
 
 from __future__ import annotations
@@ -16,13 +11,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from omegaconf import OmegaConf  # noqa: E402
+from omegaconf import OmegaConf 
 
-from emotion_analysis import EMOTION_LABELS  # noqa: E402
-from emotion_analysis.data.datasets import build_split, resolve_languages  # noqa: E402
-from emotion_analysis.models.registry import build_model  # noqa: E402
-from emotion_analysis.utils.config import load_config  # noqa: E402
-from emotion_analysis.utils.seeds import set_seed  # noqa: E402
+from emotion_analysis import EMOTION_LABELS  
+from emotion_analysis.data.datasets import build_split, resolve_languages  
+from emotion_analysis.models.registry import build_model  
+from emotion_analysis.utils.config import load_config  
+from emotion_analysis.utils.seeds import set_seed  
 
 
 def parse_args() -> argparse.Namespace:

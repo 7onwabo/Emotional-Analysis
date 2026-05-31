@@ -48,7 +48,7 @@ def build_baseline(config: BaselineConfig) -> Any:
         ngram_range=tuple(config.ngram_range),
         max_features=config.max_features,
         sublinear_tf=True,
-        strip_accents=None,  # African-language diacritics are meaningful — keep them
+        strip_accents=None,  
     )
     clf = OneVsRestClassifier(_build_estimator(config))
     return Pipeline([("tfidf", vectorizer), ("clf", clf)])

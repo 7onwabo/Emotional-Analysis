@@ -82,7 +82,7 @@ def train_transformer(
 
     gradient_checkpointing = bool(getattr(t, "gradient_checkpointing", False))
     if gradient_checkpointing:
-        model.config.use_cache = False  # incompatible with checkpointing
+        model.config.use_cache = False  
 
     args = TrainingArguments(
         output_dir=str(output_dir),
@@ -106,7 +106,7 @@ def train_transformer(
         greater_is_better=t.greater_is_better,
         report_to=list(log.report_to),
         seed=config.seed,
-        dataloader_pin_memory=False,  # MPS does not support pinned memory
+        dataloader_pin_memory=False, 
         gradient_checkpointing=gradient_checkpointing,
         gradient_checkpointing_kwargs={"use_reentrant": False} if gradient_checkpointing else None,
     )
@@ -123,7 +123,6 @@ def train_transformer(
         compute_metrics=hf_compute_metrics_fn(label_names, threshold=threshold),
         callbacks=[EarlyStoppingCallback(early_stopping_patience=t.early_stopping_patience)],
     )
-    # `tokenizer=` was renamed to `processing_class=` (transformers >=4.46).
     if "processing_class" in inspect.signature(Trainer.__init__).parameters:
         trainer_kwargs["processing_class"] = tokenizer
     else:

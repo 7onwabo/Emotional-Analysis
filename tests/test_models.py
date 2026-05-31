@@ -18,8 +18,6 @@ sklearn = pytest.importorskip("sklearn")
 def test_metrics_from_predictions_perfect():
     from emotion_analysis.training.metrics import metrics_from_predictions
 
-    # Every label must have at least one positive, else macro-F1 averages in
-    # zero-support labels (zero_division=0) and drops below 1.0.
     labels = np.array([[1, 1, 1, 0, 0, 0], [0, 0, 0, 1, 1, 1]])
     m = metrics_from_predictions(labels, labels, label_names=EMOTION_LABELS)
     assert m["f1_macro"] == pytest.approx(1.0)
@@ -69,12 +67,9 @@ def test_per_language_report_groups():
     assert set(rep) == {"overall", "afr", "swa"}
     assert rep["afr"]["n_examples"] == 2
     assert rep["swa"]["n_examples"] == 1
-    # micro-F1 is robust to zero-support labels; perfect preds -> 1.0
     assert rep["overall"]["f1_micro"] == pytest.approx(1.0)
     assert rep["overall"]["hamming_loss"] == pytest.approx(0.0)
-    # only anger/disgust/fear fire here -> joy/sadness/surprise are zero-support
     assert set(rep["overall"]["zero_support_labels"]) == {"joy", "sadness", "surprise"}
-    # swa slice only has the fear-positive row
     assert set(rep["swa"]["zero_support_labels"]) == {"anger", "disgust", "joy", "sadness", "surprise"}
 
 

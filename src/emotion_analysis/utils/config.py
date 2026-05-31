@@ -27,4 +27,4 @@ def load_config(
     cfg = OmegaConf.merge(*parts)
     if overrides:
         cfg = OmegaConf.merge(cfg, OmegaConf.from_dotlist(overrides))
-    return cfg  # type: ignore[return-value]
+    return cfg  

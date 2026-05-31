@@ -20,8 +20,6 @@ datasets = pytest.importorskip("datasets")
 
 @pytest.fixture
 def afr_like_split():
-    # Mirrors the BRIGHTER schema: id, text, 6 emotion columns, plus `emotions`.
-    # `surprise` is null for one row to exercise the null-coercion path.
     return datasets.Dataset.from_list(
         [
             {
@@ -40,7 +38,7 @@ def afr_like_split():
             },
             {
                 "id": "afr_train_002",
-                "text": "  ",  # whitespace-only; dropped by preprocess_examples
+                "text": "  ",  
                 "anger": 1, "disgust": 0, "fear": 0,
                 "joy": 0, "sadness": 0, "surprise": 0,
                 "emotions": ["anger"],
@@ -53,7 +51,7 @@ def test_to_emotion_examples_canonical_order(afr_like_split):
     examples = to_emotion_examples(afr_like_split, language="afr")
     assert len(examples) == 3
     assert all(isinstance(ex, EmotionExample) for ex in examples)
-    assert examples[0].labels == [0, 0, 0, 0, 1, 0]  # surprise null -> 0
+    assert examples[0].labels == [0, 0, 0, 0, 1, 0]  
     assert examples[1].labels == [0, 0, 0, 1, 0, 1]
     assert examples[0].example_id == "afr_train_000"
     assert all(ex.language == "afr" for ex in examples)
@@ -71,9 +69,8 @@ def test_to_arrays_shapes(afr_like_split):
 def test_preprocess_drops_short_and_clips(afr_like_split):
     examples = to_emotion_examples(afr_like_split, language="afr")
     cleaned = preprocess_examples(examples, min_chars=3, max_chars=20)
-    assert len(cleaned) == 2  # whitespace-only row dropped
+    assert len(cleaned) == 2 
     assert all(len(ex.text) <= 20 for ex in cleaned)
-    # labels preserved through the clean
     assert cleaned[0].labels == [0, 0, 0, 0, 1, 0]
 
 
@@ -82,5 +79,4 @@ def test_missing_label_column_treated_as_zero():
         [{"id": "x", "text": "hello", "anger": 1, "joy": 0, "emotions": ["anger"]}]
     )
     examples = to_emotion_examples(ds, language="eng")
-    # disgust/fear/sadness/surprise columns absent -> all 0
     assert examples[0].labels == [1, 0, 0, 0, 0, 0]

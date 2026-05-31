@@ -45,7 +45,7 @@ def tokenize_function(examples: dict[str, Any], tokenizer: Any, max_length: int)
         examples["text"],
         truncation=True,
         max_length=max_length,
-        padding=False,  # dynamic padding via DataCollatorWithPadding at batch time
+        padding=False,  
     )
 
 

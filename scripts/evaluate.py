@@ -1,8 +1,8 @@
 """Evaluate a trained checkpoint on a split, with per-language breakdown.
 
 Examples:
-    python scripts/evaluate.py --checkpoint outputs/tfidf_logreg_afr --language afr
-    python scripts/evaluate.py --checkpoint outputs/afro_xlmr_base_all --language all
+    python scripts/evaluate.py 
+    python scripts/evaluate.py 
 
 Writes reports/eval/{checkpoint_name}/{split}_report.json and error_examples.json.
 """
@@ -19,14 +19,14 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from emotion_analysis import EMOTION_LABELS  # noqa: E402
-from emotion_analysis.data.datasets import build_split, resolve_languages  # noqa: E402
-from emotion_analysis.evaluation.classification import (  # noqa: E402
+from emotion_analysis import EMOTION_LABELS 
+from emotion_analysis.data.datasets import build_split, resolve_languages 
+from emotion_analysis.evaluation.classification import (  
     collect_error_examples,
     confusion_per_label,
     per_language_report,
 )
-from emotion_analysis.utils.config import load_config  # noqa: E402
+from emotion_analysis.utils.config import load_config 
 
 
 def parse_args() -> argparse.Namespace:

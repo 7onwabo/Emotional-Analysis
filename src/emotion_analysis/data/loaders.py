@@ -22,7 +22,6 @@ ETHIOEMO_HF_ID = "Tadesse/EthioEmo"
 DEFAULT_RAW_DIR = Path("data/raw/brighter")
 DEFAULT_ETHIOEMO_DIR = Path("data/raw/ethioemo")
 
-# Both datasets share the same id/text + 6 int64 emotion-column schema.
 SOURCE_REGISTRY: dict[str, tuple[str, Path]] = {
     "brighter": (BRIGHTER_HF_ID, DEFAULT_RAW_DIR),
     "ethioemo": (ETHIOEMO_HF_ID, DEFAULT_ETHIOEMO_DIR),
@@ -32,7 +31,7 @@ SOURCE_REGISTRY: dict[str, tuple[str, Path]] = {
 @dataclass
 class EmotionExample:
     text: str
-    labels: list[int]  # multi-hot over EMOTION_LABELS
+    labels: list[int]  
     language: str
     example_id: str | None = None
 
@@ -190,15 +189,14 @@ def load_examples_by_source(
 AFRISENTI_HF_ID = "shmuhammad/AfriSenti-twitter-sentiment"
 AFRIHATE_HF_ID = "shmuhammad/AfriHate"
 
-# Languages in our target set that appear in each auxiliary dataset
-AFRISENTI_OVERLAP = ["hau", "amh", "orm"]  # hau=Hausa, amh=Amharic, orm=Oromo
+AFRISENTI_OVERLAP = ["hau", "amh", "orm"] 
 AFRIHATE_OVERLAP = ["hau", "amh"]
 
 
 @dataclass
 class AuxExample:
     text: str
-    label: int   # single integer class label
+    label: int   
     language: str
 
 
@@ -237,10 +235,9 @@ def load_afrisenti(
         parts = line.split("\t")
         if len(parts) < 2:
             continue
-        # Format: tweet\tlabel  (no header row in some files; skip if header)
         text_col, label_col = parts[0], parts[-1]
         if label_col in ("label", "labels"):
-            continue  # skip header
+            continue 
         label = label_map.get(label_col.strip().lower(), 2)
         if text_col.strip():
             examples.append(AuxExample(text=text_col.strip(), label=label, language=language))

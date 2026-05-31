@@ -2,10 +2,6 @@
 
 Phase 1: fine-tune a transformer on AfriSenti (sentiment) or AfriHate (hate speech).
 Phase 2: fine-tune the phase-1 checkpoint on BRIGHTER/EthioEmo emotion labels.
-
-Examples:
-    python scripts/transfer_train.py --aux afrisenti --model afro_xlmr_base
-    python scripts/transfer_train.py --aux afrihate  --model afro_xlmr_base
 """
 
 from __future__ import annotations
@@ -112,7 +108,7 @@ def fine_tune_auxiliary(
         dataloader_pin_memory=False,
         gradient_checkpointing=bool(getattr(t, "gradient_checkpointing", False)),
         gradient_checkpointing_kwargs={"use_reentrant": False} if getattr(t, "gradient_checkpointing", False) else None,
-        use_cpu=True,  # aux phase on CPU to avoid MPS OOM alongside other allocations
+        use_cpu=True,  
     )
     if bool(getattr(t, "gradient_checkpointing", False)):
         model.config.use_cache = False
@@ -151,7 +147,6 @@ def main() -> None:
 
     print(f"[transfer] aux={aux_name} model={model_key} overlap_langs={overlap}")
 
-    # --- Phase 1: load auxiliary data for overlapping languages ---
     aux_train: list[AuxExample] = []
     aux_dev: list[AuxExample] = []
     for lang in overlap:
@@ -162,7 +157,7 @@ def main() -> None:
                 import random; random.seed(42)
                 lang_train = random.sample(lang_train, args.max_aux)
             aux_train += lang_train
-            aux_dev += lang_dev[:500]  # cap dev too
+            aux_dev += lang_dev[:500] 
             print(f"[transfer] loaded {lang} aux train={len(lang_train)} dev={len(lang_dev)}")
         except Exception as e:
             print(f"[transfer] warning: could not load {lang} from {aux_name}: {e}")
@@ -184,7 +179,6 @@ def main() -> None:
         aux_epochs=args.aux_epochs,
     )
 
-    # Re-init classification head for emotion (different num_labels)
     print(f"[transfer] Phase 2: fine-tuning on emotion ({len(label_names)} labels)...")
     from transformers import AutoConfig
 
@@ -195,7 +189,6 @@ def main() -> None:
         id2label={i: n for i, n in enumerate(label_names)},
         label2id={n: i for i, n in enumerate(label_names)},
     )
-    # Copy encoder weights, re-init classifier head
     emotion_model = AutoModelForSequenceClassification.from_config(emotion_config)
     encoder_state = {k: v for k, v in model.state_dict().items() if not k.startswith("classifier")}
     missing, unexpected = emotion_model.load_state_dict(encoder_state, strict=False)

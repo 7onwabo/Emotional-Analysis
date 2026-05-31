@@ -1,14 +1,6 @@
 """Cross-lingual transfer evaluation (RQ2).
-
 Zero-shot: train on a source language set, evaluate on withheld target languages.
 Few-shot:  fine-tune the zero-shot model on N examples from the target language.
-
-Examples:
-    # Zero-shot: train on hau+swa+amh, evaluate zero-shot on afr+tir+orm
-    python scripts/cross_lingual.py --train-langs hau swa amh --eval-langs afr tir orm
-
-    # Few-shot: same but fine-tune on 100 examples per target language
-    python scripts/cross_lingual.py --train-langs hau swa amh --eval-langs afr tir orm --few-shot 100
 """
 
 from __future__ import annotations
@@ -64,7 +56,6 @@ def main() -> None:
 
     print(f"[xling] train_langs={args.train_langs} eval_langs={args.eval_langs} few_shot={args.few_shot}")
 
-    # --- Train on source languages ---
     train_texts, train_labels, _ = build_split(cfg, args.train_langs, "train")
     dev_texts, dev_labels, _ = build_split(cfg, args.train_langs, "dev")
     print(f"[xling] source train={len(train_texts)} dev={len(dev_texts)}")
@@ -85,7 +76,6 @@ def main() -> None:
     )
     print(f"[xling] source dev f1_macro={artifacts.metrics.get('f1_macro'):.4f}")
 
-    # --- Zero-shot evaluation on target languages ---
     import torch
     from transformers import AutoModelForSequenceClassification, AutoTokenizer as HFTokenizer
 
@@ -115,7 +105,6 @@ def main() -> None:
         if lang in zs_report:
             print(f"[xling]   {lang}: f1_macro={zs_report[lang]['f1_macro']:.4f} (n={zs_report[lang]['n_examples']})")
 
-    # --- Few-shot fine-tune ---
     if args.few_shot > 0:
         print(f"\n[xling] === Few-shot ({args.few_shot} examples/lang) fine-tune ===")
         rng = np.random.default_rng(cfg.seed)
@@ -133,7 +122,6 @@ def main() -> None:
 
         from emotion_analysis.models.registry import build_model as _build
         fs_model, fs_tokenizer = _build(model_key, num_labels=len(label_names))
-        # Load source-trained weights
         state = AutoModelForSequenceClassification.from_pretrained(str(output_dir)).state_dict()
         fs_model.load_state_dict(state)
 

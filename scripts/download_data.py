@@ -4,10 +4,6 @@ Saves each `{lang}/{split}` to `data/raw/brighter/` via `datasets.save_to_disk`
 and writes `data/raw/brighter/manifest.json` summarising row counts and any
 labels that are `null` in the raw data (BRIGHTER leaves un-annotated emotions
 as null for some languages, e.g. `surprise` for afr).
-
-Run:
-    python scripts/download_data.py
-    python scripts/download_data.py --languages afr swa
 """
 
 from __future__ import annotations
@@ -21,8 +17,8 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from emotion_analysis import EMOTION_LABELS  # noqa: E402
-from emotion_analysis.utils.config import load_config  # noqa: E402
+from emotion_analysis import EMOTION_LABELS  
+from emotion_analysis.utils.config import load_config  
 
 
 def parse_args() -> argparse.Namespace:
@@ -51,7 +47,7 @@ def _null_label_audit(ds: Any, label_cols: list[str]) -> dict[str, int]:
     audit: dict[str, int] = {}
     for col in label_cols:
         if col not in ds.column_names:
-            audit[col] = -1  # column absent for this language
+            audit[col] = -1 
             continue
         audit[col] = sum(1 for v in ds[col] if v is None)
     return audit
@@ -94,7 +90,6 @@ def main() -> None:
     args = parse_args()
     cfg = load_config("data", "languages")
 
-    # Group requested target languages by their dataset source.
     targets = cfg.target_languages
     if args.languages:
         targets = [t for t in targets if t.code in set(args.languages)]

@@ -48,10 +48,9 @@ class BiLSTMClassifier(nn.Module):
         lengths: torch.Tensor | None = None,
         labels: torch.Tensor | None = None,
     ) -> dict[str, torch.Tensor]:
-        # input_ids: (batch, seq_len) token ids
         batch_size, seq_len = input_ids.shape
 
-        embedded = self.embedding(input_ids)  # (batch, seq, embed)
+        embedded = self.embedding(input_ids) 
         embedded = self.dropout(embedded)
 
         packed = nn.utils.rnn.pack_padded_sequence(
@@ -61,11 +60,10 @@ class BiLSTMClassifier(nn.Module):
             enforce_sorted=False,
         )
         _, (hidden, _) = self.lstm(packed)
-        # hidden: (num_layers*2, batch, hidden) — take last layer's fwd+bwd
-        fwd = hidden[-2]  # (batch, hidden)
-        bwd = hidden[-1]  # (batch, hidden)
-        pooled = self.dropout(torch.cat([fwd, bwd], dim=-1))  # (batch, hidden*2)
-        logits = self.classifier(pooled)  # (batch, num_labels)
+        fwd = hidden[-2]  
+        bwd = hidden[-1]  
+        pooled = self.dropout(torch.cat([fwd, bwd], dim=-1))  
+        logits = self.classifier(pooled)  
 
         output: dict[str, torch.Tensor] = {"logits": logits}
         if labels is not None:

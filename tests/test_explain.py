@@ -9,7 +9,7 @@ from emotion_analysis import EMOTION_LABELS
 
 pytest.importorskip("lime")
 
-from emotion_analysis.evaluation.explainability import lime_explain  # noqa: E402
+from emotion_analysis.evaluation.explainability import lime_explain  
 
 JOY = EMOTION_LABELS.index("joy")
 

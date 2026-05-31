@@ -19,9 +19,6 @@ from typing import Any, Callable
 import numpy as np
 
 from emotion_analysis import EMOTION_LABELS
-
-# A proba_fn maps a list of texts -> (n_texts, n_labels) array of per-label
-# probabilities in [0, 1] (independent, multi-label — rows need not sum to 1).
 ProbaFn = Callable[[list[str]], np.ndarray]
 
 
@@ -134,7 +131,6 @@ def integrated_gradients(
 
     ref_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0
     baseline_ids = torch.full_like(input_ids, ref_id)
-    # keep special tokens (CLS/SEP) fixed in the baseline
     special_mask = torch.tensor(
         tokenizer.get_special_tokens_mask(input_ids[0].tolist(), already_has_special_tokens=True),
         device=device,
@@ -168,7 +164,7 @@ def shap_explain(proba_fn: ProbaFn, texts: list[str], label_index: int, tokenize
     """
     try:
         import shap
-    except ImportError as e:  # pragma: no cover
+    except ImportError as e: 
         raise ImportError('SHAP not installed. Run: pip install -e ".[shap]"') from e
 
     def _scalar_proba(texts_in: list[str]) -> np.ndarray:

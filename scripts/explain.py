@@ -4,10 +4,6 @@ Picks the worst-misclassified examples on a split and attributes tokens for the
 emotions in play (gold ∪ predicted), using LIME (model-agnostic) or, for
 transformers, Captum integrated gradients.
 
-Examples:
-    python scripts/explain.py --checkpoint outputs/tfidf_logreg_afr --language afr
-    python scripts/explain.py --checkpoint outputs/afro_xlmr_base_all --method ig --n 5
-
 Writes reports/explain/{checkpoint}/{split}_{method}.json
 """
 
@@ -23,15 +19,15 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from emotion_analysis import EMOTION_LABELS  # noqa: E402
-from emotion_analysis.data.datasets import build_split, resolve_languages  # noqa: E402
-from emotion_analysis.evaluation.explainability import (  # noqa: E402
+from emotion_analysis import EMOTION_LABELS 
+from emotion_analysis.data.datasets import build_split, resolve_languages 
+from emotion_analysis.evaluation.explainability import ( 
     integrated_gradients,
     lime_explain,
     make_baseline_proba_fn,
     make_transformer_proba_fn,
 )
-from emotion_analysis.utils.config import load_config  # noqa: E402
+from emotion_analysis.utils.config import load_config  
 
 
 def parse_args() -> argparse.Namespace:
@@ -73,7 +69,6 @@ def main() -> None:
         model = AutoModelForSequenceClassification.from_pretrained(str(ckpt))
         proba_fn = make_transformer_proba_fn(model, tokenizer, max_length=args.max_length)
 
-    # Rank examples by number of wrong labels, explain the worst `n`.
     probs = proba_fn(texts)
     preds = (probs >= threshold).astype(int)
     n_wrong = (preds != labels).sum(axis=1)

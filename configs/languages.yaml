@@ -1,10 +1,4 @@
-# Target languages. `code` is the canonical identifier AND the per-dataset
-# config name (they coincide for both BRIGHTER and EthioEmo). `source` selects
-# which loader/dataset the language comes from. Split sizes verified against the
-# HF datasets.
-
 target_languages:
-  # --- BRIGHTER (brighter-dataset/BRIGHTER-emotion-categories), Latin script ---
   - code: afr
     name: Afrikaans
     family: Indo-European (Germanic)
@@ -32,7 +26,6 @@ target_languages:
     splits: { train: 2145, dev: 712, test: 2160 }
     notes: Different language family from afr and swa — gives a real cross-family comparison in the equity/fairness analysis.
 
-  # --- EthioEmo (Tadesse/EthioEmo), Ge'ez script — same 6-label multilabel schema ---
   - code: amh
     name: Amharic
     family: Afro-Asiatic (Semitic)
@@ -60,13 +53,9 @@ target_languages:
     splits: { train: 3682, dev: 614, test: 1841 }
     notes: Latin-script EthioEmo language. Adds a third Afro-Asiatic language with Latin script for cross-family comparison.
 
-# Optional sources for ablations or back-translation pivots only.
-# Not reported in the final per-language results.
 auxiliary_languages:
   - code: eng
     name: English
     family: Indo-European (Germanic)
     use: pipeline validation, back-translation pivot
 
-# Other EthioEmo configs available if the language set is widened later
-# (both Latin script): orm (Afaan Oromo), som (Somali).
